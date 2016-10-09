@@ -1,0 +1,156 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00B7FF;
+}
+.page {
+  min-height: 100%;
+}
+#sidenav{
+    position: fixed;
+    height: 100%;
+    background-color: #0086a3;
+    md-sidenav{
+        background-color: #0086a3;
+        height: 100%;
+    }
+    .nav-header{
+        height: 220px;
+        img.logo{
+            margin-top: 30px;
+            margin-left: 40px;
+            max-width: 100%;
+            height: 180px;
+            display: block;
+        }
+        .logo-title{
+            text-align: left;
+            margin-left: 53px;
+        }
+        a{
+            color: #fff;
+            text-decoration: none;
+        }
+    }
+    article#menu{
+        margin-top: 30px;
+        #list{
+            margin-left: 40px;
+        }
+        a{
+            text-decoration: none;
+            color: #fee;
+        }
+    }
+}
+
+#main{
+    height: auto;
+    max-height: 2000px;
+    .content{
+        padding-left: 30px;
+        padding-top:50px; 
+    }
+    .blog-list-item{
+        background-color: #c2fde9;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+    }
+    .blog-list-item-title{
+        font-size: 26px;
+        color: #0086a3;
+    }
+    .blog-list-item-time{
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    md-divider{
+        margin-bottom: 20px;
+        margin-top: 30px;
+        position: static;
+    }
+}
+
+.md-text{
+    margin-left: 15px;
+    margin-right: 15px;
+    h1,h2,h3{
+        margin-top: 15px;
+    }
+    h4,h5,h6{
+        margin-top: 10px;
+    }
+    p{
+        margin-top:10px;
+    }
+    pre{
+        background-color: #f7f7f7;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        code{
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+    }
+    blockquote{
+        margin-left: 15px;
+    }
+    ul{
+        margin:15px 20px;
+        list-style: none;
+    }
+    table{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 100%;
+        background-color: transparent;
+        display: table;
+        border-spacing: 0;
+        border-collapse: collapse;
+        border-collapse: grey;
+        thead{
+            text-align: left;
+            tr{
+                height: 25px;
+                th{
+                    padding-left: 20px;
+                }
+            }
+        }
+        tr{
+            display: table-row;
+            vertical-align: inherit;
+            border-collapse: inherit;
+        }
+        td{
+            padding: 10px;
+            line-height: 1.2;
+            vertical-align: top;
+            border-top:solid 1px #ddd;
+        }
+        tbody>tr:nth-child(odd){
+            background-color: #f9f9f9;
+        }
+    }
+    hr{
+        height: 1px;
+        border: none;
+        border-bottom: 1px dashed grey;
+    }
+    .blog-title{
+        color: #0086a3;
+    }
+    .blog-post-time{
+        color: lightgray;
+    }
+}

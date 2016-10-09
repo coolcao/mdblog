@@ -1,0 +1,18 @@
+{% extends './layout.html' %}
+
+
+{% block content %}
+    <section  flex="20" ng-controller="SideNavCtrl" id="sidenav" ui-view="sidenav"></section>
+    <div ui-view="content"
+        flex="80"
+        flex-md="80"
+        flex-sm="100"
+        flex-xs="100"
+        flex-lg="80"
+        id="main"
+        flex-offset="20"
+        flex-offset-md="20"
+        flex-offset-sm="0"
+        flex-offset-xs="0"
+        flex-offset-lg="20"></div> 
+{% endblock %}

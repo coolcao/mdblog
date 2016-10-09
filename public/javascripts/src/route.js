@@ -1,0 +1,44 @@
+/**
+ * Created by coolcao on 16/8/3.
+ */
+
+app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/");
+    $stateProvider
+    .state('index',{
+        url:'/',
+        views:{
+            'sidenav':{templateUrl:'views/sidenav.html'},
+            'content':{templateUrl:'views/blogs.html'}
+        }
+    })
+    .state('blogs',{
+        url:'/blogs',
+        views:{
+            'sidenav':{templateUrl:'views/sidenav.html'},
+            'content':{templateUrl:'views/blogs.html'}
+        }
+    })
+    .state('blogs-detail',{
+        url:'/blogs/:id',
+        controller:'BlogDetailCtrl',
+        views:{
+            'sidenav':{templateUrl:'views/sidenav.html'},
+            'content':{templateUrl:'views/blogs.detail.html'}
+        }
+    })
+    .state('tags',{
+        url:'/tags',
+        views:{
+            'sidenav':{templateUrl:'views/sidenav.html'},
+            'content':{templateUrl:'views/blogs.tags.html'}
+        }
+    })
+    .state('tags.list',{
+        url:'/list',
+        views:{
+            'sidenav':{templateUrl:'views/sidenav.html'},
+            'content':{templateUrl:'views/blogs.tags.list.html'}
+        }
+    })
+}]);

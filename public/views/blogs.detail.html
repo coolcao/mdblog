@@ -1,0 +1,8 @@
+<div class="content md-text" ng-controller="BlogDetailCtrl" ng-init="detail()"  onload="prettyPrint()">
+    <div layout="column" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
+        <h2 class="blog-title">{{blog.name}}</h2>
+        <hr>
+        <h4 class="blog-post-time">post at:{{blog.create_time}}</h4>
+        <div ng-bind-html="blog.content | trustHtml "></div>
+    </div>
+</div>
