@@ -41,4 +41,11 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $url
             'content':{templateUrl:'views/blogs.tags.list.html'}
         }
     })
+    .state('about',{
+        url:'/about',
+        views:{
+            'sidenav':{templateUrl:'views/sidenav.html'},
+            'content':{templateUrl:'views/about.html'}
+        }
+    })
 }]);

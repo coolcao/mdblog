@@ -14,12 +14,8 @@ app.controller('SideNavCtrl',['$scope',function ($scope) {
         state:'tags'
     },
     {
-        name:'标签子目录',
-        state:'tags.list'
-    },
-    {
         name:'关于在下',
-        state:'blogs-detail'
+        state:'about'
     },
     ];
 }]);
