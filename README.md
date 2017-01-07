@@ -1,3 +1,11 @@
+
+使用markdown写博客，然后推送到github，github定制钩子到本程序，然后程序拉取博客内容，保存到mongodb，前端获取数据展示博客。
+
+流程示意图：
+
+![示意图](http://7xt3oh.com2.z0.glb.clouddn.com/blog/mdblog.png)
+
+
 ### 流程：
 
   * github推送更新信息
@@ -22,10 +30,13 @@
 * 要不要记录日志
 
 ### 技术选型
+
+> 前后端分离，以rest接口交互，前端可随时更换
+
 #### 后台：
 * nodejs + mongodb + express
 #### 前端：
-* bootstrap页面样式
+* angular
 * 代码美化
 
 #### markdown博客编写：
