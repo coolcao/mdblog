@@ -55,8 +55,8 @@ var detail = function detail(req, res) {
 }
 
 var post = function(req, res) {
-    var body = req.body;
-    // var body = hook;
+    // var body = req.body;
+    var body = hook;
     if (!body) {
         console.log('接收github的鉤子請求失敗');
         return res.json({
@@ -66,43 +66,56 @@ var post = function(req, res) {
     }
 
     var commits = body.commits;
-    commits.forEach(function(commit) {
-        if (!commit) {
+    let added = [];
+    let removed = [];
+    let updated = [];
+
+    commits.forEach(commit => {
+        if(!commit){
             return res.send({
-                ret: 500,
-                err: '此次提交沒有head_commit'
+                ret:500,
+                err:'此次提交没有commit'
             });
         }
-        var added = commit.added;
-        var removed = commit.removed;
-        var modified = commit.modified;
+        added = added.concat(commit.added);
+        removed = removed.concat(commit.removed);
+        updated = updated.concat(commit.modified);
+    });
 
-        added.forEach(function(path) {
-            console.log('添加的博客：' + path);
-            blogService.get_and_save(path).then(function() {
-                console.log('添加博客' + path + '成功');
-            }).catch(function(err) {
-                console.log(err);
-            });
-        });
-
-        removed.forEach(function(path) {
-            console.log('刪除的博客：' + path);
-            blogService.remove(path);
-        });
-
-        modified.forEach(function(path) {
-            console.log('修改的博客：' + path);
-            hookService.content(path).then(function(_blog) {
-                blogService.update(_blog).catch(function(err) {
-                    console.log(err);
-                });
-            }).catch(function(err) {
-                console.log(err);
-            });
+    added.forEach(blog => {
+        console.log(`要添加的博客：【${blog}】`);
+        blogService.get_and_save(blog).then(result => {
+            console.log('添加博客' + path + '成功');
+        }).catch(err => {
+            console.log(err);
         });
     });
-    res.send(hook);
+
+        removed.forEach(function(blog) {
+            console.log('刪除的博客：' + blog);
+            blogService.remove(blog).then(result => {
+                console.log(`删除博客：【${blog}】`);
+            }).catch(err => {
+                console.log(err);
+            });
+        });
+
+        modified.forEach(function(blog) {
+            console.log('修改的博客：' + blog);
+            hookService.content(blog).then(function(_blog) {
+                return blogService.update(_blog);
+            }).then(result => {
+                console.log(`修改博客：【${blog}】`);
+            }).catch(function(err) {
+                console.log(err);
+            });
+        });
+
+    res.json({
+        added:added,
+        removed:removed,
+        updated:updated
+    });
 };
 
 var tags = function tags(req, res) {
