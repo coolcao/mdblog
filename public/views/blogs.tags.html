@@ -1,3 +1,43 @@
-<h2>
-    blogs tags
-</h2>
+<div class="content" ng-controller="TagsController" ng-init="tags()">
+    <div ui-view="content"
+        flex="80"
+        flex-md="80"
+        flex-sm="100"
+        flex-xs="100"
+        flex-lg="80"
+        flex-offset="20"
+        flex-offset-md="20"
+        flex-offset-sm="0"
+        flex-offset-xs="0"
+        flex-offset-lg="20"></div> 
+    <div layout="row" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
+        <!--<div ng-repeat="tag in tags" class="padded blog-list-item" md-whiteframe="1"   flex-sm="95" flex-gt-sm="95" flex-gt-md="95" layout layout-align="center center">
+            <md-list flex>
+            <md-list-item class="md-3-line">
+            <div class="md-list-item-text" layout="column">
+                <md-divider ></md-divider>
+                <h4 class="blog-list-item-time">{{ tag.tag }}</h4>
+                <p class="blog-list-item-content">{{ tag.count }}</p>
+            </div>
+            </md-list-item>
+            </md-list>
+        </div>-->
+        <md-card md-theme="default" style="width: 100%;color: gray;">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">标签分类</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-divider></md-divider>
+            <md-list>
+                <md-list-item ng-repeat="tag in tags" ng-click="listByTag(tag.tag)">
+                    <h3> {{ tag.tag }} </h3>
+                    <h4 class="md-secondary">{{tag.count}}</h4>
+                </md-list-item>
+
+            </md-list>
+        </md-card>
+        
+        
+    </div>
+</div>

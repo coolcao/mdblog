@@ -3,11 +3,17 @@
  */
 
 
-app.controller('BlogCtrl',['$scope','$http',function ($scope,$http) {
+app.controller('BlogCtrl',['$scope','$http','$stateParams',function ($scope,$http,$stateParams) {
+
+    $scope.tag = $stateParams.tag;
 
     $scope.list = function (page) {
         page = page || 1;
-        $http.get('/blogs?page='+page).then(function (result) {
+        var url = '/blogs?page=' + page;
+        if($scope.tag){
+            url += ('&tag=' + $scope.tag);
+        }
+        $http.get(url).then(function (result) {
             $scope.blogs = result.data && result.data.blogs;
             $scope.pagination = result.data && result.data.pagination;
         },function (err) {

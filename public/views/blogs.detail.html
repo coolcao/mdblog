@@ -1,15 +1,18 @@
 <div class="content md-text" ng-controller="BlogDetailCtrl" ng-init="detail()"  onload="prettyPrint()">
-    <div layout="column" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;" ng-cloak>
-        <div layout="row">
-        <h2 flex="70" class="blog-title">{{blog.name}}</h2>
-        <h4 flex="30" class="blog-post-time">post at:{{blog.create_time}}</h4>
-        </div>
-        <hr>
-        <div layout="row">
-            <h4>分类 : <a href="">{{blog.catalog}}</a></h4>
+    <md-card md-theme="default">
+        <div layout="column" layout-padding layout-wrap layout-fill style="padding-bottom: 32px;padding-left: 40px;padding-right: 40px;padding-top:30px;" ng-cloak>
+            <div layout="row">
+            <h2 flex="70" class="blog-title">{{blog.name}}</h2>
+            <h4 flex="30" class="blog-post-time">发表于：{{blog.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</h4>
+            </div>
+            <hr>
+            <div layout="row">
+                <h4>分类 : <a href="/#/blogs?tag={{blog.catalog}}">{{blog.catalog}}</a></h4>
+                
+            </div>
+            <div ng-bind-html="blog.content | trustHtml "></div>
             
         </div>
-        <div ng-bind-html="blog.content | trustHtml "></div>
-        
-    </div>
+    </md-card>
+    
 </div>

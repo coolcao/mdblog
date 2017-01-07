@@ -13,7 +13,7 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $url
         }
     })
     .state('blogs',{
-        url:'/blogs',
+        url:'/blogs?:tag',
         views:{
             'sidenav':{templateUrl:'views/sidenav.html'},
             'content':{templateUrl:'views/blogs.html'}
@@ -29,6 +29,7 @@ app.config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $url
     })
     .state('tags',{
         url:'/tags',
+        controller:'TagsController',
         views:{
             'sidenav':{templateUrl:'views/sidenav.html'},
             'content':{templateUrl:'views/blogs.tags.html'}
