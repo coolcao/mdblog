@@ -6,7 +6,7 @@ FROM coolcao/nodejs-6.5
 MAINTAINER me@coolcao.com
 
 ENV HTTP_PORT 3000
-ENV MONGO_URL mongodb://127.0.0.1:27017/coolcao
+ENV MONGO_URL mongodb://123.56.221.60:27017/coolcao
 
 COPY . /app
 WORKDIR /app

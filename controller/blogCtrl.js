@@ -5,7 +5,6 @@ var Blog = require('../module/Blog.js');
 var Base = require('../module/Base');
 var hookService = require('../service/hookService');
 var blogService = require('../service/blogService');
-var hook = require('../hook.json');
 var queryString = require('querystring');
 var showdown = require('showdown');
 var converter = new showdown.Converter({
@@ -55,8 +54,7 @@ var detail = function detail(req, res) {
 }
 
 var post = function(req, res) {
-    // var body = req.body;
-    var body = hook;
+    var body = req.body;
     if (!body) {
         console.log('接收github的鉤子請求失敗');
         return res.json({
