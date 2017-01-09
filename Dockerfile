@@ -2,7 +2,7 @@
 #
 # VERSION    1.0.0
 
-FROM coolcao/node-6
+FROM coolcao/nodejs-6.5
 MAINTAINER me@coolcao.com
 
 ENV HTTP_PORT 3000
