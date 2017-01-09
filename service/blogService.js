@@ -8,7 +8,7 @@ var Blog = require('../module/Blog');
 var hookService = require('./hookService');
 var Promise = require('bluebird');
 var ObjectID = require('mongodb').ObjectID;
-var Pagination = require('../module/Pagination.js');
+var Pagination = require('../module/pagination.js');
 var config = require('../config/config.js');
 const coll_name = 'blogs';
 
