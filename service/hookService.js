@@ -42,9 +42,11 @@ var content = function(path) {
 
                 //Get the catalog from path
                 var as = body.path.split('/');
-                if (as.length > 1) {
-                    body.catalog = as[0];
-                }
+                // if (as.length > 1) {
+                //     body.catalog = as[0];
+                // }
+                Array.isArray(as) && as.pop();
+                body.catalog = as;
                 resolve(body);
             }
         });
