@@ -4,6 +4,7 @@ var Base = require('./Base.js');
 var objUtil = require('../utils/objUtil');
 var mongo = require('../config/mongo');
 var ObjectID = require('mongodb').ObjectID;
+var commonTools = require('../service/commonTools.js');
 
 /**
  {
@@ -61,9 +62,12 @@ class Blog extends Base {
 
     tags() {
         return mongo.getCollection(this.coll_name).then((coll) => {
-            return coll.group(['catalog'], {}, {
-                count: 0
-            }, "function(doc,prev){prev.count++}");
+            return coll.find({},{catalog:1}).toArray();
+        }).then(blogs => {
+            let tagArrays = blogs.map(blog => {
+                return blog.catalog;
+            });
+            return commonTools.createCatalogTree(tagArrays);
         });
     }
 };

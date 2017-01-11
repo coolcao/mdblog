@@ -7,8 +7,8 @@
             </div>
             <hr>
             <div layout="row">
-                <h4>分类 : <a href="/#/blogs?tag={{blog.catalog}}">{{blog.catalog}}</a></h4>
-                
+                <!--<h4>分类 : <a href="/#/blogs?tag={{blog.catalog}}">{{blog.catalog}}</a></h4>-->
+                <h4>分类：<span ng-repeat="cata in blog.catalog"><a href="/#/blogs?tag={{cata}}">{{cata}}&nbsp;&nbsp;</a></span></h4> 
             </div>
             <div ng-bind-html="blog.content | trustHtml " style="width:100%;"></div>
             

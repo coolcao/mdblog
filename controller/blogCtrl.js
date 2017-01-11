@@ -117,10 +117,6 @@ var post = function (req, res) {
 
 var tags = function tags (req, res) {
   blogService.tags().then(function (tags) {
-    tags.forEach(function (item) {
-      item.tag = item.catalog
-      delete item.catalog
-    })
     res.json({
       ret: 0,
       tags: tags

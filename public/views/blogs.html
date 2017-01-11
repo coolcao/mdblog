@@ -18,7 +18,7 @@
             <div class="md-list-item-text" layout="column">
                 <a ui-sref="blogs-detail({id:'{{blog._id}}'})"><h2 class="blog-list-item-title">{{ blog.name }}</h2></a>
                 <md-divider ></md-divider>
-                <h4 class="blog-list-item-time">发表于：{{ blog.create_time | date:'yyyy-MM-dd HH:mm:ss' }}|分类：{{blog.catalog}}</h4>
+                <h4 class="blog-list-item-time">发表于：{{ blog.create_time | date:'yyyy-MM-dd HH:mm:ss' }}<span class="time_catalog_separate">|</span>分类：<span ng-repeat="cata in blog.catalog"><a href="/#/blogs?tag={{cata}}">{{cata}}&nbsp;&nbsp;</a></span> </h4>
                 <p class="blog-list-item-content">{{ blog.subcontent }}</p>
             </div>
             </md-list-item>
