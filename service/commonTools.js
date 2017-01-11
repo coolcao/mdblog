@@ -27,6 +27,9 @@ let createCatalogTree = function createCatalogTree(catalogs) {
                 key = c.key;
                 child = c.child;
                 o = c;
+                if(key == parent){
+                    break;
+                }
             }
         }
         if (o.child && Array.isArray(o.child)) {

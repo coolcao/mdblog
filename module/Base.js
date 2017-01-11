@@ -34,7 +34,6 @@ class Base{
         })
     };
     static query(coll_name,query_opt,pagination){
-        console.log(Base.coll_name);
         let page = pagination && pagination.page || config.pagination.page;
         let limit = pagination && pagination.limit || config.pagination.limit;
         return mongo.getCollection(coll_name).then((coll)=>{
