@@ -45,23 +45,30 @@ let listMdFilesExceptHidden = function (path) {
   return files
 }
 
-mongo.getCollection('blogs').then(coll => {
-  let list = listMdFilesExceptHidden(filePath)
+mongo.getDB.then(db => {
+  let coll = db.collection('blogs');
+  let list = listMdFilesExceptHidden(filePath);
+  let ps = [];
   list.forEach(item => {
     let subpath = item.replace(filePath + '/','');
     let array = subpath.split('/');
     let name = array.pop();
     let catalog = array;
-
-    fs.readFile(item,'utf-8',function(err,data){
-      let blog = new Blog({content:data,path:subpath,name:name,catalog:catalog});
-      coll.insert(blog).then(result => {
-        console.log(`insert ${blog.name} success`);
-      }).catch(err => {
-        console.log(`insert ${blog.name} fail! ${err.message}`);
-      });
-    });
-  })
-})
+    let data = fs.readFileSync(item,'utf-8');
+    let blog = new Blog({content:data,path:subpath,name:name,catalog:catalog});
+    console.log(blog.path);
+    ps.push(coll.insert(blog));
+  });
+  Promise.all(ps).then(result => {
+    console.log('所有md文档已插入数据库');
+    return db.close();
+  }).then(result => {
+    console.log('数据库已关闭');
+  }).catch(err => {
+    console.log(err);
+  });
+}).catch(err => {
+  console.log(err);
+});
 
 
