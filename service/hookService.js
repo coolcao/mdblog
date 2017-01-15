@@ -1,10 +1,10 @@
 'use strict';
 
-var request = require('request');
-var config = require('../config/config');
-var Promise = require('bluebird');
+const request = require('request');
+const config = require('../config/config');
+const Promise = require('bluebird');
 
-var options = {
+let options = {
     headers: {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36',
         'Content-Type': 'application/json; charset=utf-8',
@@ -13,13 +13,13 @@ var options = {
 };
 
 //根據path獲取文件內容
-var content = function(path) {
+const content = function(path) {
     //這裏要對文件名裏的/進行urlencode轉碼，否則請求不到
     // var fullPath = config.github.url.content + urlencode(path);
-    var fullPath = config.github.url.content + encodeURIComponent(path);
+    let fullPath = config.github.url.content + encodeURIComponent(path);
     options.url = fullPath;
 
-    var p = new Promise(function(resolve, reject) {
+    const p = new Promise(function(resolve, reject) {
         request.get(options, function(err, response, body) {
             // console.log('---------------------------hook-service-------------------');
             // console.log(err);

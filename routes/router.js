@@ -4,8 +4,8 @@
 
 'use strict';
 
-var blog = require('./blog');
-var core = require('./core');
+const blog = require('./blog');
+const core = require('./core');
 
 module.exports = function (app) {
     app.use('/blogs', blog);

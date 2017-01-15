@@ -1,10 +1,9 @@
 'use strict';
 
-var Base = require('./Base.js');
-var objUtil = require('../utils/objUtil');
-var mongo = require('../config/mongo');
-var ObjectID = require('mongodb').ObjectID;
-var commonTools = require('../service/commonTools.js');
+const Base = require('./Base.js');
+const mongo = require('../config/mongo');
+const ObjectID = require('mongodb').ObjectID;
+const CatalogTree = require('./CatalogTree.js');
 
 /**
  {
@@ -67,7 +66,7 @@ class Blog extends Base {
             let tagArrays = blogs.map(blog => {
                 return blog.catalog;
             });
-            return commonTools.createCatalogTree(tagArrays);
+            return new CatalogTree(tagArrays);
         });
     }
 };

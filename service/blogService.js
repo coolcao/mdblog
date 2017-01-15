@@ -4,16 +4,16 @@
 
 'use strict'
 
-var Blog = require('../module/Blog');
-var hookService = require('./hookService');
-var Promise = require('bluebird');
-var ObjectID = require('mongodb').ObjectID;
-var Pagination = require('../module/pagination.js');
-var config = require('../config/config.js');
+const Blog = require('../module/Blog');
+const hookService = require('./hookService');
+const Promise = require('bluebird');
+const ObjectID = require('mongodb').ObjectID;
+const Pagination = require('../module/pagination.js');
+const config = require('../config/config.js');
 const coll_name = 'blogs';
 
 //保存到數據庫
-var save = function save(iblog) {
+const save = function save(iblog) {
     var blog = new Blog(iblog);
     return blog.save();
 }
@@ -22,7 +22,7 @@ var save = function save(iblog) {
 /**
  查询所有，没有分页
  **/
-var list = function list(opt) {
+const list = function list(opt) {
     var tag = opt.tag;
     var query = {};
     if (tag) {
@@ -42,15 +42,15 @@ var list = function list(opt) {
 /**
  分页查询列表
  **/
-var listByPage = function listByPage(opt, pagination) {
-    var tag = opt.tag;
-    var page = pagination && pagination.page ? pagination.page : config.pagination.page;
-    var limit = pagination && pagination.limit ? pagination.limit : config.pagination.limit;
-    var query = {};
+const listByPage = function listByPage(opt, pagination) {
+    let tag = opt.tag;
+    let page = pagination && pagination.page ? pagination.page : config.pagination.page;
+    let limit = pagination && pagination.limit ? pagination.limit : config.pagination.limit;
+    let query = {};
     if (tag) {
         query.catalog = tag;
     }
-    var list = function list(query) {
+    let list = function list(query) {
         return Blog.query(query, {
             page: page,
             limit: limit
@@ -58,9 +58,9 @@ var listByPage = function listByPage(opt, pagination) {
     }
     return new Promise(function(resolve, reject) {
         Promise.all([list(query), Blog.count(query)]).then(function(values) {
-            var docs = values[0];
-            var count = values[1];
-            var _pagination = new Pagination(page, limit, count);
+            let docs = values[0];
+            let count = values[1];
+            let _pagination = new Pagination(page, limit, count);
             resolve({
                 blogs: docs,
                 pagination: _pagination
@@ -71,24 +71,24 @@ var listByPage = function listByPage(opt, pagination) {
     });
 }
 
-var search = function search(kw,pagination) {
-    var page = pagination&&pagination.page?pagination.page:config.pagination.page;
-    var limit = pagination&&pagination.limit?pagination.limit:config.pagination.limit;
-    var query = {
+const search = function search(kw,pagination) {
+    let page = pagination&&pagination.page?pagination.page:config.pagination.page;
+    let limit = pagination&&pagination.limit?pagination.limit:config.pagination.limit;
+    let query = {
         "$or":[
             {"path":{"$regex":".+"+kw+".+"}},
             {"content":{"$regex":".+"+kw+".+"}}
         ]
     };
-    var blog = new Blog();
-    var queryFun = function (query) {
+    let blog = new Blog();
+    let queryFun = function (query) {
         return Blog.query(query,{page:page,limit:limit});
     }
     return new Promise(function (resolve,reject) {
         Promise.all([queryFun(query),Blog.count(query)]).then(function (values) {
-            var docs = values[0];
-            var count = values[1];
-            var _pagination = new Pagination(page,limit,count);
+            let docs = values[0];
+            let count = values[1];
+            let _pagination = new Pagination(page,limit,count);
             resolve({
                 blogs:docs,
                 pagination:_pagination
@@ -99,13 +99,13 @@ var search = function search(kw,pagination) {
     });
 }
 
-var queryById = function queryById(id) {
+const queryById = function queryById(id) {
     let blog = new Blog({_id:id});
     return blog.queryById();
 }
 
-var updateByPath = function updateByPath(iblog) {
-    var blog = new Blog(iblog);
+const updateByPath = function updateByPath(iblog) {
+    let blog = new Blog(iblog);
     return new Promise(function(resolve, reject) {
         blog.queryByPath().then(function(b) {
             if (b && b._id) {
@@ -124,21 +124,21 @@ var updateByPath = function updateByPath(iblog) {
     });
 }
 
-var remove = function remove(path) {
-    var blog = new Blog({
+const remove = function remove(path) {
+    let blog = new Blog({
         path: path
     });
     return blog.deleteByPath();
 }
 
-var tags = function tags() {
-    var blog = new Blog();
+const tags = function tags() {
+    let blog = new Blog();
     return blog.tags();
 }
 
 //獲取博客內容，並保存到數據庫
-var get_and_save = function(path) {
-    var p = new Promise(function(resolve, reject) {
+const get_and_save = function(path) {
+    let p = new Promise(function(resolve, reject) {
         if (!path) {
             reject('獲取並保存blog時，path不能爲空');
         } else {

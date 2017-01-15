@@ -1,14 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var swig = require('swig');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const swig = require('swig');
 
-var router = require('./routes/router.js')
+const router = require('./routes/router.js')
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.engine('html',swig.renderFile);

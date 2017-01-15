@@ -3,10 +3,10 @@
  */
 'use strict';
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var blogCtrl = require('../controller/blogCtrl');
+const blogCtrl = require('../controller/blogCtrl');
 
 router.get('/',blogCtrl.list);
 router.post('/',blogCtrl.post);

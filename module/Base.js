@@ -1,8 +1,8 @@
 'use strict';
 
-var mongo = require('../config/mongo');
-var ObjectID = require('mongodb').ObjectID;
-var config = require('../config/config.js');
+const mongo = require('../config/mongo');
+const ObjectID = require('mongodb').ObjectID;
+const config = require('../config/config.js');
 
 
 class Base{

@@ -1,18 +1,20 @@
 /**
  * Created by coolcao on 16/8/3.
  */
-var Pagination = function Pagination(page, limit, total) {
-    this.page = page;
-    this.limit = limit;
-    //如果知道总条数，根据总条数计算分页的各个项
+
+class Pagination{
+    constructor(page,limit,total){
+        this.page = page;
+        this.limit = limit;
+        //如果知道总条数，根据总条数计算分页的各个项
     if (total) {
-        var pages = [];
-        var hasPrePage = true;
-        var hasNextPage = true;
-        var totalPages = 0;
-        var prePage = 0;
-        var nextPage = 0;
-        var count = 0;
+        let pages = [];
+        let hasPrePage = true;
+        let hasNextPage = true;
+        let totalPages = 0;
+        let prePage = 0;
+        let nextPage = 0;
+        let count = 0;
         totalPages = Math.ceil(total / limit);
         if (page == 1) {
             hasPrePage = false;
@@ -28,7 +30,7 @@ var Pagination = function Pagination(page, limit, total) {
             count = limit;
         }
 
-        for (var x = 1; x <= totalPages; x++) {
+        for (let x = 1; x <= totalPages; x++) {
             if (x === page) {
                 pages.push({
                     page: x,
@@ -50,7 +52,8 @@ var Pagination = function Pagination(page, limit, total) {
         this.count = count;
         this.pages = pages;
     }
-};
+    }
+}
 
 module.exports = Pagination;
 
