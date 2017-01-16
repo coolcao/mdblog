@@ -5,6 +5,7 @@ const mongo = require('./config/mongo')
 const fs = require('fs')
 const filePath = '/Users/coolcao/mycode/coolcao/blogs'
 const Blog = require('./module/Blog.js');
+const hexoTools = require('./service/hexoTools.js');
 
 let mds = []
 let dirs = []
@@ -27,7 +28,7 @@ let listMdFilesExceptHidden = function (path) {
       return
     }
 
-    let stat = fs.statSync(path)
+    let stat = fs.statSync(path);
     if (stat.isDirectory()) {
       let list = fs.readdirSync(path).map(item => {
         return path + '/' + item
@@ -45,6 +46,13 @@ let listMdFilesExceptHidden = function (path) {
   return files
 }
 
+
+// let data = fs.readFileSync('/Users/coolcao/mycode/coolcao/blogs/js/计算机中的负数为什么使用补码表示.md','utf-8');
+// let head = data && hexoTools.parseHead(data);
+// let stats = fs.statSync('/Users/coolcao/mycode/coolcao/blogs/js/计算机中的负数为什么使用补码表示.md');
+// console.log(stats);
+
+
 mongo.getDB.then(db => {
   let coll = db.collection('blogs');
   let list = listMdFilesExceptHidden(filePath);
@@ -55,8 +63,31 @@ mongo.getDB.then(db => {
     let name = array.pop();
     let catalog = array;
     let data = fs.readFileSync(item,'utf-8');
-    let blog = new Blog({content:data,path:subpath,name:name,catalog:catalog});
-    console.log(blog.path);
+    let stats = fs.statSync(item);
+    let head = data && hexoTools.parseHead(data);
+    let iblog = {
+      create_time:stats.birthtime,
+      update_time:stats.mtime,
+      content:data,
+      path:subpath,
+      name:name,
+      catalog:catalog
+    }
+    console.log(item);
+    if(head){
+      let title = head && head.title;
+      let date = head && head.date;
+      iblog.content = head.head && data.replace(head.head,'');
+      iblog.name = title || name;
+      try{
+        iblog.create_time = new Date(date);
+        iblog.update_time = new Date(date);
+      }catch(err){
+        console.log(err.message);
+      }
+    }
+    // let blog = new Blog({content:data,path:subpath,name:title || name,catalog:catalog,create_time:date,update_time:date});
+    let blog =  new Blog(iblog);
     ps.push(coll.insert(blog));
   });
   Promise.all(ps).then(result => {

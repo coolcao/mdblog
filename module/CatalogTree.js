@@ -81,6 +81,22 @@ class CatalogTree {
 
         return this;
     }
+
+    /**
+     * 以数组统计的形式返回目录
+     * @return {Array} 
+     */
+    values(){
+        let q = [];
+        let r = [];
+        q = q.concat(this.child);
+        while (q.length > 0) {
+            let t = q.shift();
+            r.push({key:t.key,count:t.count});
+            q = q.concat(t.child);
+        }
+        return r;
+    }
 }
 
 module.exports = CatalogTree;

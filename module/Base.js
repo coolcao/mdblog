@@ -38,7 +38,8 @@ class Base{
         let limit = pagination && pagination.limit || config.pagination.limit;
         return mongo.getCollection(coll_name).then((coll)=>{
             return coll.find(query_opt).skip((page - 1) * limit).limit(limit).sort({
-                _id: -1
+                // _id: -1
+                update_time:-1
             }).toArray();
         })
     };

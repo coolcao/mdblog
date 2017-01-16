@@ -1,0 +1,33 @@
+<div class="col-sm-3" >
+  <div  ng-controller="TagsController" ng-init="tags()">
+    
+    <h5 class="font-bold">标签分类</h5>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="tag in tags.child">
+        <a ng-click="search({tag:'{{tag.key}}'})" >
+          <span class="badge pull-right bg-primary">{{tag.count}}</span> {{tag.key}}
+        </a>
+      </li>
+    </ul>
+    <div class="tags m-b-lg l-h-2x">
+      <span ng-repeat="tagValue in tagsValues" >
+        <a ng-click="search({tag:'{{tagValue.key}}'})" class="label bg-info">{{tagValue.key}}</a>
+      </span>
+    </div>
+  </div>
+  <h5 class="font-bold">最近发表</h5>
+  <div ng-controller="BlogListController" ng-init="recent()">
+    <div ng-repeat="blog in blogs">
+      <div>
+        <a class="pull-left thumb thumb-wrapper m-r">
+          <img src="img/b0.jpg">
+        </a>
+        <div class="clear">
+          <a ui-sref="blog.detail({id:'{{blog._id}}'})" class="font-semibold text-ellipsis">{{blog.name}}</a>
+          <div class="text-xs block m-t-xs">{{blog.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+        </div>
+      </div>
+      <div class="line"></div>
+    </div>
+  </div>
+</div>

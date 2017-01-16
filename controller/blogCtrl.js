@@ -1,29 +1,29 @@
 'use strict'
 
-var mongo = require('../config/mongo')
-var Blog = require('../module/Blog.js')
-var Base = require('../module/Base')
-var hookService = require('../service/hookService')
-var blogService = require('../service/blogService')
-var queryString = require('querystring')
-var showdown = require('showdown')
-var converter = new showdown.Converter({
+const mongo = require('../config/mongo');
+const Blog = require('../module/Blog.js');
+const Base = require('../module/Base');
+const hookService = require('../service/hookService');
+const blogService = require('../service/blogService');
+const queryString = require('querystring');
+const showdown = require('showdown');
+const CatalogTree = require('../module/CatalogTree.js');
+const converter = new showdown.Converter({
   tables: true,
   parseImgDimensions: true
-})
-var blogService = require('../service/blogService')
+});
 
-var list = function (req, res) {
-  var tag = req.query.tag
-  var page = req.query.page >>> 0
+const list = function(req, res) {
+  let tag = req.query.tag
+  let page = req.query.page >>> 0
 
   blogService.listByPage({
     tag: tag
   }, {
     page: page
-  }).then(function (data) {
-    var blogs = Array.from(data.blogs)
-    blogs.forEach(function (item, index, array) {
+  }).then(function(data) {
+    let blogs = Array.from(data.blogs)
+    blogs.forEach(function(item, index, array) {
       item.subcontent = item.content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;')
       item.content = converter.makeHtml(item.content)
     })
@@ -31,20 +31,23 @@ var list = function (req, res) {
       blogs: blogs,
       pagination: data.pagination
     })
-  }).catch(function (err) {
+  }).catch(function(err) {
     console.log(err)
     res.send(err)
   })
-}
+};
 
-var detail = function detail (req, res) {
-  var id = req.params.id
-  blogService.queryById(id).then(function (result) {
+const detail = function detail(req, res) {
+  let id = req.params.id
+  blogService.queryById(id).then(function(result) {
     if (result) {
       result.content = converter.makeHtml(result.content).replace(/<pre>/g, '<pre class="prettyprint">')
     }
-    res.json({ret: 0,blog: result})
-  }).catch(function (err) {
+    res.json({
+      ret: 0,
+      blog: result
+    })
+  }).catch(function(err) {
     res.json({
       ret: 500,
       err: err
@@ -52,8 +55,8 @@ var detail = function detail (req, res) {
   })
 }
 
-var post = function (req, res) {
-  var body = req.body
+const post = function(req, res) {
+  let body = req.body
   if (!body) {
     console.log('接收github的鉤子請求失敗')
     return res.json({
@@ -62,7 +65,7 @@ var post = function (req, res) {
     })
   }
 
-  var commits = body.commits
+  let commits = body.commits
   let added = []
   let removed = []
   let updated = []
@@ -88,7 +91,7 @@ var post = function (req, res) {
     })
   })
 
-  removed.forEach(function (blog) {
+  removed.forEach(function(blog) {
     console.log('刪除的博客：' + blog)
     blogService.remove(blog).then(result => {
       console.log(`删除博客：【${blog}】`)
@@ -97,13 +100,13 @@ var post = function (req, res) {
     })
   })
 
-  updated.forEach(function (blog) {
+  updated.forEach(function(blog) {
     console.log('修改的博客：' + blog)
-    hookService.content(blog).then(function (_blog) {
+    hookService.content(blog).then(function(_blog) {
       return blogService.update(_blog)
     }).then(result => {
       console.log(`修改博客：【${blog}】`)
-    }).catch(function (err) {
+    }).catch(function(err) {
       console.log(err)
     })
   })
@@ -115,13 +118,14 @@ var post = function (req, res) {
   })
 }
 
-var tags = function tags (req, res) {
-  blogService.tags().then(function (tags) {
+const tags = function tags(req, res) {
+  let values = null;
+  blogService.tags().then(function(tags) {
     res.json({
       ret: 0,
       tags: tags
     })
-  }).catch(function (err) {
+  }).catch(function(err) {
     console.log(err)
     res.json({
       ret: 500,
@@ -130,30 +134,36 @@ var tags = function tags (req, res) {
   })
 }
 
-var search = function search (req, res) {
-  var kw = req.query.keyWord ? req.query.keyWord : '.'
-  var page = req.query.page >>> 0
+const search = function search(req, res) {
+  let kw = req.query.keyWord ? req.query.keyWord : '.'
+  let page = req.query.page >>> 0
   blogService.search(kw, {
     page: page
-  }).then(function (data) {
-    var blogs = Array.from(data.blogs)
-    blogs.forEach(function (item, index, array) {
-      item.subcontent = item.content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      item.content = converter.makeHtml(item.content)
-    })
-    // 手动剔除query中的page参数
+  }).then(function(data) {
+    let blogs = Array.from(data.blogs)
+    blogs.forEach(function(item, index, array) {
+        item.subcontent = item.content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        item.content = converter.makeHtml(item.content)
+      })
+      // 手动剔除query中的page参数
     delete req.query.page
     res.json({
       blogs: blogs,
       pagination: data.pagination
     })
-  }).catch(function (err) {
+  }).catch(function(err) {
     console.log(err)
     res.json({
-      ret: 500,err: err
+      ret: 500,
+      err: err
     })
   })
 }
 
 module.exports = {
-list, post, detail, tags, search}
+  list,
+  post,
+  detail,
+  tags,
+  search
+}

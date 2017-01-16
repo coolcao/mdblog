@@ -1,11 +1,11 @@
 'use strict';
 
-var config = require('./config');
-var MongoClient = require('mongodb').MongoClient;
+const config = require('./config');
+const MongoClient = require('mongodb').MongoClient;
 
-var getDB = MongoClient.connect(config.mongo.url);
+const getDB = MongoClient.connect(config.mongo.url);
 
-var getCollection = function (coll) {
+const getCollection = function (coll) {
     if(typeof coll != 'string'){
         console.log(JSON.stringify(coll));
         return Promise.reject(`参数coll必须为字符串类型的集合名称`);
