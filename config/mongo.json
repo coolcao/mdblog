@@ -1,0 +1,7 @@
+{
+  "url":"mongodb://host:port/",
+  "db":"db",
+  "port":"27017",
+  "user":"your_db_user",
+  "pwd":"your_db_pwd"
+}
