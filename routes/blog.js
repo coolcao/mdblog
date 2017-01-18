@@ -12,7 +12,7 @@ router.get('/',blogCtrl.list);
 router.post('/',blogCtrl.post);
 router.get('/tags',blogCtrl.tags)
 router.get('/search',blogCtrl.search);
-router.get('/:id',blogCtrl.detail);
+router.get('/:path',blogCtrl.detailPath);
 
 module.exports = router;
 

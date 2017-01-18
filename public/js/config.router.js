@@ -40,7 +40,7 @@ angular.module('app')
             }
           })
           .state('blog.detail', {
-            url: '/:id',
+            url: '/:path',
             controller: 'BlogDetailController',
             templateUrl: 'tpl/blog/blog.detail.html',
             resolve: {

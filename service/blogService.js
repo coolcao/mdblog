@@ -104,6 +104,12 @@ const queryById = function queryById(id) {
     return blog.queryById();
 }
 
+const queryByPath = (path) => {
+    let blog = new Blog({path:path});
+    return blog.queryByPath();
+}
+
+
 const updateByPath = function updateByPath(iblog) {
     let blog = new Blog(iblog);
     return new Promise(function(resolve, reject) {
@@ -175,6 +181,7 @@ module.exports = {
     queryById: queryById,
     update: updateByPath,
     remove: remove,
-    get_and_save: get_and_save
+    get_and_save: get_and_save,
+    queryByPath:queryByPath
 };
 

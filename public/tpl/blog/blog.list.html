@@ -7,7 +7,7 @@
       <div class="blog-post">
         <div class="panel" ng-repeat="blog in blogs">
           <div class="wrapper-lg">
-            <h2 class="m-t-none"><a ui-sref="blog.detail({id:'{{blog._id}}'})">{{blog.name}}</a></h2>
+            <h2 class="m-t-none"><a ui-sref="blog.detail({path:'{{blog.path}}'})">{{blog.name}}</a></h2>
             <div>
               {{blog.subcontent}}
             </div>

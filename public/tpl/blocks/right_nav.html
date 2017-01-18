@@ -23,7 +23,7 @@
           <img src="img/b0.jpg">
         </a>
         <div class="clear">
-          <a ui-sref="blog.detail({id:'{{blog._id}}'})" class="font-semibold text-ellipsis">{{blog.name}}</a>
+          <a ui-sref="blog.detail({path:'{{blog.path}}'})" class="font-semibold text-ellipsis">{{blog.name}}</a>
           <div class="text-xs block m-t-xs">{{blog.create_time | date:'yyyy-MM-dd HH:mm:ss'}}</div>
         </div>
       </div>

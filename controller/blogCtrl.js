@@ -38,8 +38,27 @@ const list = function(req, res) {
 };
 
 const detail = function detail(req, res) {
-  let id = req.params.id
+  let id = req.params.id;
   blogService.queryById(id).then(function(result) {
+    if (result) {
+      result.content = converter.makeHtml(result.content).replace(/<pre>/g, '<pre class="prettyprint">')
+    }
+    res.json({
+      ret: 0,
+      blog: result
+    })
+  }).catch(function(err) {
+    res.json({
+      ret: 500,
+      err: err
+    })
+  })
+}
+
+const detailPath = (req,res) => {
+  let path = req.params.path;
+  //注意这里的path，前端传的时候一定要进行urlencoding，后端这里也要解，但是使用的express库会自动解
+  blogService.queryByPath(path).then(function(result) {
     if (result) {
       result.content = converter.makeHtml(result.content).replace(/<pre>/g, '<pre class="prettyprint">')
     }
@@ -164,6 +183,7 @@ module.exports = {
   list,
   post,
   detail,
+  detailPath,
   tags,
   search
 }

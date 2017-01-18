@@ -1,11 +1,11 @@
 'use strict'
 app.controller('BlogDetailController', ['$scope', '$http', '$stateParams', '$filter', function ($scope, $http, $stateParams, $filter) {
   $scope.detail = function () {
-    var id = $stateParams.id
-    if (!id) {
-      return alert('出错了')
+    var path = $stateParams.path;
+    if (!path) {
+      return alter('path不能为空');
     }
-    $http.get('/blogs/' + id).then(function (result) {
+    $http.get('/blogs/' + encodeURIComponent(path)).then(function (result) {
       // $scope.blog = result.data && $filter('prettyprint')(result.data.blog) 
       $scope.blog = result.data && result.data.blog
       if ($scope.blog) {
