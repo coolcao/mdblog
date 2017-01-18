@@ -33,6 +33,6 @@ app.controller('TagsController', ['$scope', '$http', '$state',function ($scope, 
     if(!tag){
       alert('tag不能为空');
     }
-    $state.go('blog.list',{page:1,tag:tag});
+    $state.go('blog.list',{page:null,tag:tag});
   };
 }])

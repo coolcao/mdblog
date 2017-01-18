@@ -154,7 +154,7 @@ const tags = function tags(req, res) {
 }
 
 const search = function search(req, res) {
-  let kw = req.query.keyWord ? req.query.keyWord : '.'
+  let kw = req.query.keyword ? req.query.keyword : '.'
   let page = req.query.page >>> 0
   blogService.search(kw, {
     page: page

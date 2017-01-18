@@ -1,15 +1,16 @@
 'use strict';
 
-app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state', function($scope, $http, $stateParams,$state) {
+app.controller('BlogSearchController', ['$scope', '$http', '$stateParams','$state', function($scope, $http, $stateParams,$state) {
 
-    $scope.tag = $stateParams.tag;
     $scope.page = $stateParams.page;
+    $scope.keyword = $stateParams.keyword;
 
-    $scope.list = function() {
+    $scope.search = function() {
+        console.log($scope.page);
         var page = $scope.page || 1;
-        var url = '/blogs?page=' + page;
-        if ($scope.tag) {
-            url += ('&tag=' + $scope.tag);
+        var url = '/blogs/search?page=' + page;
+        if ($scope.keyword) {
+            url += ('&keyword=' + $scope.keyword);
         }
         let countPerPage = 5;
         $http.get(url).then(function(result) {
@@ -54,30 +55,21 @@ app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state'
         });
     };
 
-    $scope.recent = function () {
-        var url = '/blogs' ;
-        $http.get(url).then(function(result) {
-            $scope.blogs = result.data && result.data.blogs.slice(0,5);;
-        }, function(err) {
-            console.log(err);
-        });
-    }
-
     $scope.goto = function(page) {
         if (page) {
-            $state.go('blog.list',{page:page});
+            $state.go('blog.search',{page:page});
         }
     };
 
     $scope.prePage = function() {
         if ($scope.pagination.hasPrePage) {
-            $state.go('blog.list',{page:$scope.page});
+            $state.go('blog.search',{page:$scope.page});
         }
     }
 
     $scope.nextPage = function() {
         if ($scope.pagination.hasNextPage) {
-            $state.go('blog.list',{page:$scope.page});
+            $state.go('blog.search',{page:$scope.page});
         }
 
     }

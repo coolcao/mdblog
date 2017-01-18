@@ -24,7 +24,7 @@ angular.module('app')
             templateUrl: 'tpl/app.html',
             resolve: {
               deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                return $ocLazyLoad.load(['js/app/blog/blog.tags.controller.js','js/app/blog/blog.list.controller.js'])
+                return $ocLazyLoad.load(['js/app/blog/blog.tags.controller.js','js/app/blog/blog.list.controller.js','js/controllers/search.form.controller.js'])
               }]
             }
           })
@@ -36,6 +36,17 @@ angular.module('app')
               deps: ['$ocLazyLoad',
                 function ($ocLazyLoad) {
                   return $ocLazyLoad.load(['js/app/blog/blog.list.controller.js'])
+                }]
+            }
+          })
+          .state('blog.search', {
+            url: '/search?:keyword&:page',
+            controller: 'BlogSearchController',
+            templateUrl: 'tpl/blog/blog.search.html',
+            resolve: {
+              deps: ['$ocLazyLoad',
+                function ($ocLazyLoad) {
+                  return $ocLazyLoad.load(['js/app/blog/blog.search.controller.js'])
                 }]
             }
           })

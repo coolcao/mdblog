@@ -76,8 +76,9 @@ const search = function search(kw,pagination) {
     let limit = pagination&&pagination.limit?pagination.limit:config.pagination.limit;
     let query = {
         "$or":[
-            {"path":{"$regex":".+"+kw+".+"}},
-            {"content":{"$regex":".+"+kw+".+"}}
+            {"path":{"$regex":".*"+kw+".*"}},
+            {"content":{"$regex":".*"+kw+".*"}},
+            {"name":{"$regex":".*"+kw+".*"}}
         ]
     };
     let blog = new Blog();
