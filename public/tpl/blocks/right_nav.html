@@ -4,14 +4,14 @@
     <h5 class="font-bold">标签分类</h5>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="tag in tags.child">
-        <a ng-click="search({tag:'{{tag.key}}'})" >
+        <a ng-click="listByTag('{{tag.key}}')" >
           <span class="badge pull-right bg-primary">{{tag.count}}</span> {{tag.key}}
         </a>
       </li>
     </ul>
     <div class="tags m-b-lg l-h-2x">
       <span ng-repeat="tagValue in tagsValues" >
-        <a ng-click="search({tag:'{{tagValue.key}}'})" class="label bg-info">{{tagValue.key}}</a>
+        <a ng-click="listByTag('{{tagValue.key}}')" class="label bg-info">{{tagValue.key}}</a>
       </span>
     </div>
   </div>
