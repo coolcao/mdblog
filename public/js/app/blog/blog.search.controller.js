@@ -1,12 +1,10 @@
 'use strict';
 
-app.controller('BlogSearchController', ['$scope', '$http', '$stateParams','$state', function($scope, $http, $stateParams,$state) {
+app.controller('BlogSearchController', ['$scope', '$http', '$stateParams','$state', 'toaster',function($scope, $http, $stateParams,$state,toaster) {
 
     $scope.page = $stateParams.page;
     $scope.keyword = $stateParams.keyword;
-
     $scope.search = function() {
-        console.log($scope.page);
         var page = $scope.page || 1;
         var url = '/blogs/search?page=' + page;
         if ($scope.keyword) {
@@ -52,6 +50,7 @@ app.controller('BlogSearchController', ['$scope', '$http', '$stateParams','$stat
             }
         }, function(err) {
             console.log(err);
+            toaster.pop('error','错误',err.message || err);
         });
     };
 

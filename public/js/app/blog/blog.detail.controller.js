@@ -1,9 +1,9 @@
 'use strict'
-app.controller('BlogDetailController', ['$scope', '$http', '$stateParams', '$filter', function($scope, $http, $stateParams, $filter) {
+app.controller('BlogDetailController', ['$scope', '$http', '$stateParams', '$filter','toaster', function($scope, $http, $stateParams, $filter,toaster) {
   $scope.detail = function() {
     var path = $stateParams.path;
     if (!path) {
-      return alter('path不能为空');
+      return toaster.pop('error','错误','path不能为空');
     }
     try {
       path = window.decodeURIComponent(path);
@@ -23,9 +23,10 @@ app.controller('BlogDetailController', ['$scope', '$http', '$stateParams', '$fil
         }
       }, function(err) {
         console.log(err)
+        toaster.pop('error','错误',err.message || err);
       })
     } catch (err) {
-
+        toaster.pop('error','错误',err.message || err);
     }
 
   }

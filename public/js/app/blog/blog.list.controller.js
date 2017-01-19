@@ -1,9 +1,10 @@
 'use strict';
 
-app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state', function($scope, $http, $stateParams,$state) {
+app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state', 'toaster',function($scope, $http, $stateParams,$state,toaster) {
 
     $scope.tag = $stateParams.tag;
     $scope.page = $stateParams.page;
+
 
     $scope.list = function() {
         var page = $scope.page || 1;
@@ -51,6 +52,7 @@ app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state'
             }
         }, function(err) {
             console.log(err);
+            toaster.pop('error','错误',err.message || err);
         });
     };
 
@@ -60,6 +62,7 @@ app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state'
             $scope.blogs = result.data && result.data.blogs.slice(0,5);;
         }, function(err) {
             console.log(err);
+            toaster.pop('error','错误',err.message || err);
         });
     }
 
