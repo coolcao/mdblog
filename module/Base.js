@@ -44,6 +44,12 @@ class Base{
         })
     };
 
+    static queryAll(coll_name){
+        return mongo.getCollection(coll_name).then(coll => {
+            return coll.find().sort({update_time:-1}).toArray();
+        });
+    }
+
     static save(coll_name,ibase){
         return mongo.getCollection(coll_name).then((coll)=>{
             return coll.save(ibase);

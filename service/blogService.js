@@ -110,6 +110,9 @@ const queryByPath = (path) => {
     return blog.queryByPath();
 }
 
+const queryAll = () => {
+    return Blog.queryAll();
+}
 
 const updateByPath = function updateByPath(iblog) {
     let blog = new Blog(iblog);
@@ -174,15 +177,16 @@ const get_and_save = function(path) {
 };
 
 module.exports = {
-    save: save,
-    list: list,
-    listByPage: listByPage,
-    search:search,
-    tags: tags,
-    queryById: queryById,
-    update: updateByPath,
-    remove: remove,
-    get_and_save: get_and_save,
-    queryByPath:queryByPath
+    save,
+    list,
+    queryAll,
+    listByPage,
+    search,
+    tags,
+    queryById,
+    updateByPath,
+    remove,
+    get_and_save,
+    queryByPath
 };
 

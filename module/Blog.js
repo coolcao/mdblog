@@ -27,6 +27,10 @@ class Blog extends Base {
         this.coll_name = 'blogs';
     };
 
+    static queryAll(){
+        return Base.queryAll('blogs');
+    }
+
     static query(query_opt,pagination){
         return Base.query('blogs',query_opt,pagination);
     }

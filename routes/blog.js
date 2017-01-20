@@ -10,6 +10,7 @@ const blogCtrl = require('../controller/blogCtrl');
 
 router.get('/',blogCtrl.list);
 router.post('/',blogCtrl.post);
+router.get('/list',blogCtrl.listAll);
 router.get('/tags',blogCtrl.tags)
 router.get('/search',blogCtrl.search);
 router.get('/:path',blogCtrl.detailPath);
