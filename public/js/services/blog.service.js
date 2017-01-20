@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$filter', function($http, $localStorage, $q, $filter) {
+angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$filter','blogDataService','paginationFactory' ,function($http, $localStorage, $q, $filter,blogDataService,paginationFactory) {
 
     /**
      * 查询列表
@@ -8,185 +8,109 @@ angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$
      * @return {Promise}     [查询的列表，封装成Promise]
      */
     this.list = function list(opt) {
-        return $q(function(resolve, reject) {
-            var page = opt.page || 1;
-            var url = '/blogs?page=' + page;
-            if (opt.tag) {
-                url += ('&tag=' + opt.tag);
+
+        var page = opt.page || 1;
+        var tag = opt.tag ;
+
+        return blogDataService.blogs().then(function(blogs){
+            if(tag){
+                blogs = blogs.filter(function(blog){
+                    return blog.catalog.indexOf(tag) > -1;
+                });
             }
-            var countPerPage = 5;
-
-            $http.get(url).then(function(result) {
-                var blogs = result.data && result.data.blogs;
-                var pagination = result.data && result.data.pagination;
-                if (pagination) {
-                    if (pagination) {
-                        var start = 1;
-                        var end = (pagination.totalPages > 5) ? 5 : pagination.totalPages;
-                        var usePages = [];
-                        //他妈的，这段逻辑有点乱，整理一下
-
-                        var totalPages = pagination.totalPages;
-                        var currentPage = pagination.page;
-
-                        if (totalPages < countPerPage) {
-                            start = 1;
-                            end = totalPages;
-                        } else {
-                            if (currentPage < ((countPerPage / 2 >>> 0) + 1)) {
-                                start = 1;
-                                end = countPerPage;
-                            } else if (currentPage > (totalPages - (countPerPage / 2))) {
-                                end = totalPages;
-                                start = end - (countPerPage - 1);
-                            } else {
-                                start = currentPage - (countPerPage / 2 >>> 0);
-                                end = currentPage + (countPerPage / 2 >>> 0);
-                            }
-                        }
-                        for (let i = start; i <= end; i++) {
-                            usePages.push(pagination.pages[i - 1]);
-                        }
-                        pagination.usePages = usePages;
-                        resolve({
-                            pagination: pagination,
-                            blogs: blogs
-                        });
-                    }
-                }
-            }).catch(function(err) {
-                reject(err);
-            });
+            return blogs;
+        }).then(function(blogs){
+            //分页，每页条数
+            var limit = 5;
+            //符合条件的博客的所有条数
+            var total = blogs.length;
+            //生成分页对象
+            var pagination = paginationFactory.init(page,limit,total);
+            
+            //分页后的博客
+            var _blogs = blogs.slice(limit*(page-1),limit*page);
+            return {blogs:_blogs,pagination:pagination}
         });
+
     };
 
 
     this.recent = function() {
-        var url = '/blogs';
-        return $q(function(resolve, reject) {
-            $http.get(url).then(function(result) {
-                resolve(result.data && result.data.blogs.slice(0, 5));
-            }, function(err) {
-                reject(err);
-            });
+        return blogDataService.blogs().then(function(blogs){
+            return blogs.slice(0,5);
         });
     };
 
 
     this.detail = function(path) {
-        return $q(function(resolve, reject) {
-            if (!path) {
-                reject('参数错误，path不能为空');
-            }
-            try {
-                path = window.decodeURIComponent(path);
-                $http.get('/blogs/' + encodeURIComponent(path)).then(function(result) {
-                    var blog = result.data && result.data.blog;
-                    if (blog) {
-                        var reg = /<code[^>]*([\s\S]*?)<\/code>/g
-                        var codes = blog.content.match(reg);
-                        if (codes) {
-                            let coder = codes.map((item) => {
-                                return $filter('prettyprint')(item)
-                            })
-                            for (let i = 0; i < codes.length; i++) {
-                                blog.content = blog.content.replace(codes[i], coder[i]);
-                            }
+
+        return blogDataService.blogs().then(function(blogs){
+            var _blog = null;
+            for(var blog of blogs){
+                if(blog.path == path){
+                    _blog = blog;
+
+                    //使用谷歌美化代码
+                    var reg = /<code[^>]*([\s\S]*?)<\/code>/g
+                    var codes = _blog.content.match(reg);
+                    if (codes) {
+                        let coder = codes.map((item) => {
+                            return $filter('prettyprint')(item)
+                        })
+                        for (let i = 0; i < codes.length; i++) {
+                            _blog.content = _blog.content.replace(codes[i], coder[i]);
                         }
                     }
-                    resolve(blog);
-                }, function(err) {
-                    reject(err);
-                })
-            } catch (err) {
-                reject(err);
+                    break;
+                }
             }
+            return _blog;
         });
 
     };
 
 
     this.tags = function(argument) {
-        return $q(function(resolve, reject) {
-            $http.get('/blogs/tags').then(function onSuccess(result) {
-                var data = result && result.data;
-                var ret = data && data.ret;
-                var tagsTree = data && data.tags;
-                if (ret == 0) {
-                    if (tagsTree && tagsTree.child) {
-                        tagsTree.child.sort(function(a, b) {
-                            return a.count - b.count < 0;
-                        });
-                    }
-                    var values = [];
-                    var q = [];
-                    q = q.concat(tagsTree.child);
-                    while (q.length > 0) {
-                        let t = q.shift();
-                        values.push(t);
-                        q = q.concat(t.child);
-                    }
-                    resolve({
-                        tags: tagsTree,
-                        tagsValues: values
-                    });
-                } else {
-                    reject('请求错误，错误码：【' + data.ret + '】');
-                }
-            }, function onFailed(err) {
-                reject(err);
-            });
+        return blogDataService.tags().then(function(tagsTree){
+            var values = [];
+            var q = [];
+            q = q.concat(tagsTree.child);
+            while(q.length > 0){
+                var t = q.shift();
+                values.push(t.child);
+            }
+            return {tags:tagsTree,tagsValues:values}
         });
     }
 
 
     this.search = function(opt) {
-        return $q(function(resolve, reject) {
-            var page = opt.page || 1;
-            var url = '/blogs/search?page=' + page;
-            if (opt.keyword) {
-                url += ('&keyword=' + opt.keyword);
-            }
-            var countPerPage = 5;
-            $http.get(url).then(function(result) {
-                let blogs = result.data && result.data.blogs;
-                let pagination = result.data && result.data.pagination;
-                if (pagination) {
-                    var start = 1;
-                    var end = (pagination.totalPages > 5) ? 5 : pagination.totalPages;
-                    var usePages = [];
 
-                    var totalPages = pagination.totalPages;
-                    var currentPage = pagination.page;
+        var keyword = opt.keyword;
+        var page = opt.page;
 
-                    if (totalPages < countPerPage) {
-                        start = 1;
-                        end = totalPages;
-                    } else {
-                        if (currentPage < ((countPerPage / 2 >>> 0) + 1)) {
-                            start = 1;
-                            end = countPerPage;
-                        } else if (currentPage > (totalPages - (countPerPage / 2))) {
-                            end = totalPages;
-                            start = end - (countPerPage - 1);
-                        } else {
-                            start = currentPage - (countPerPage / 2 >>> 0);
-                            end = currentPage + (countPerPage / 2 >>> 0);
-                        }
-                    }
-
-                    for (var i = start; i <= end; i++) {
-                        usePages.push(pagination.pages[i - 1]);
-                    }
-
-                    pagination.usePages = usePages;
-
-                    resolve({pagination:pagination,blogs:blogs});
-                }
-            }, function(err) {
-                reject(err);
+        return blogDataService.blogs().then(function(blogs){
+            var _blogs = blogs.filter(function(blog){
+                var reg = new RegExp(keyword);
+                //搜索博客名称，路径，正文里包含关键字的博客
+                return blog.name.match(reg) || blog.path.match(reg) || blog.content.match(reg);
             });
+            return _blogs;
+        }).then(function(blogs){
+
+            var page = opt.page || 1;
+            //分页，每页条数
+            var limit = 5;
+            //符合条件的博客的所有条数
+            var total = blogs.length;
+            //生成分页对象
+            var pagination = paginationFactory.init(page,limit,total);
+            //分页后的博客
+            var _blogs = blogs.slice(limit*(page-1),limit*page);
+            return {blogs:_blogs,pagination:pagination}
+
         });
+
     }
 
 }]);

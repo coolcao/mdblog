@@ -24,7 +24,7 @@ angular.module('app')
             templateUrl: 'tpl/app.html',
             resolve: {
               deps: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load(['toaster','js/services/blog.dataService.js','js/services/blog.service.js']).then(function () {
+                return $ocLazyLoad.load(['toaster','js/services/blog.pagination.factory.js','js/services/blog.dataService.js','js/services/blog.service.js']).then(function () {
                   return $ocLazyLoad.load(['js/app/blog/blog.tags.controller.js', 'js/app/blog/blog.list.controller.js', 'js/controllers/search.form.controller.js'])
                 });
               }]
