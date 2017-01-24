@@ -61,5 +61,10 @@ app.use(function (err, req, res, next) {
     });
 });
 
+process.on('unhandledRejection', (reason, p) => {
+    console.log('捕捉到未处理的Promise拒绝');
+    console.log(reason);
+});
+
 
 module.exports = app;
