@@ -26,7 +26,7 @@ const list = function(req, res) {
     }).then(function(data) {
         let blogs = Array.from(data.blogs)
         blogs.forEach(function(item, index, array) {
-            item.subcontent = item.content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            item.subcontent = item.content.substring(0, 300).replace(/</g, '&lt;').replace(/>/g, '&gt;')
             item.content = converter.makeHtml(item.content)
         })
         res.json({
@@ -43,7 +43,7 @@ const listAll = (req,res) => {
     console.time('list all');
     blogService.queryAll().then(blogs => {
         blogs.forEach(function(item, index, array) {
-            item.subcontent = item.content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            // item.subcontent = item.content.substring(0, 500).replace(/</g, '&lt;').replace(/>/g, '&gt;')
             item.content = converter.makeHtml(item.content)
         });
         console.timeEnd('list all');

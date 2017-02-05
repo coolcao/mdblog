@@ -21,11 +21,7 @@ const content = function(path) {
 
     const p = new Promise(function(resolve, reject) {
         request.get(options, function(err, response, body) {
-            // console.log('---------------------------hook-service-------------------');
-            // console.log(err);
-            // console.log(response.statusCode);
-            // console.log(body);
-            // console.log('--------------------------------------------------------');
+
             if (err || response.statusCode != 200) {
                 reject(err || {
                         ret: 500,
@@ -42,11 +38,11 @@ const content = function(path) {
 
                 //Get the catalog from path
                 var as = body.path.split('/');
-                // if (as.length > 1) {
-                //     body.catalog = as[0];
-                // }
+
                 Array.isArray(as) && as.pop();
+
                 body.catalog = as;
+                
                 resolve(body);
             }
         });

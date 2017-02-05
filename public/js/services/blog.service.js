@@ -35,6 +35,11 @@ angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$
             
             //分页后的博客
             var _blogs = blogs.slice(limit*(page-1),limit*page);
+
+            _blogs.forEach(function (item) {
+                item.subcontent = item.content.substring(0, 500).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            });
+
             return {blogs:_blogs,pagination:pagination}
         });
 
