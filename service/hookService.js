@@ -3,6 +3,7 @@
 const request = require('request');
 const config = require('../config/config');
 const Promise = require('bluebird');
+const mdblogTools = require('./mdblogTools.js');
 
 let options = {
     headers: {
@@ -42,6 +43,14 @@ const content = function(path) {
                 Array.isArray(as) && as.pop();
 
                 body.catalog = as;
+
+                //设置标题
+                let mdblogInfo = mdblogTools.parseBlogInfo(body.content);
+                if(mdblogInfo){
+                    body.create_time = new Date(mdblogInfo.time);
+                    body.update_time = new Date(mdblogInfo.time);
+                    body.tags = mdblogInfo.tags;
+                }
                 
                 resolve(body);
             }
