@@ -75,4 +75,39 @@ angular.module('app').service('blogDataService', ['$http', '$localStorage', '$q'
         });
     }
 
+    this.catalogs = function () {
+        var key = 'blog.catalogs';
+        return  $q(function (resolve,reject) {
+            if ($localStorage[key] && ((new Date()).getTime() - Date.parse($localStorage[key].time))/1000/3600 < 24) {
+                console.log('缓存中tags保存时间为：'+$localStorage[key].time+',未过期，直接返回');
+                resolve($localStorage[key].catalogs);
+            } else {
+                $http.get('/blogs/catalogs').then(function onSuccess(result) {
+                    var data = result && result.data;
+                    var ret = data && data.ret;
+                    var catalogsTree = data && data.catalogs;
+                    if (ret == 0) {
+                        if (catalogsTree && catalogsTree.child) {
+                            catalogsTree.child.sort(function(a, b) {
+                                return a.count - b.count < 0;
+                            });
+                        }
+                        
+                        var savedValue = {
+                            catalogs: catalogsTree,
+                            time : new Date()
+                        }
+                        console.log('保存tags至localStorage');
+                        $localStorage[key] = savedValue;
+                        resolve(savedValue.catalogs);
+                    } else {
+                        reject('请求错误，错误码：【' + data.ret + '】');
+                    }
+                }, function onFailed(err) {
+                    reject(err);
+                });
+            }
+        });
+    }
+
 }]);

@@ -11,11 +11,17 @@ angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$
 
         var page = opt.page || 1;
         var tag = opt.tag ;
+        var catalog = opt.catalog;
 
         return blogDataService.blogs().then(function(blogs){
+            if(catalog){
+                blogs = blogs.filter(function(blog){
+                    return blog.catalog.indexOf(catalog) > -1;
+                });
+            }
             if(tag){
                 blogs = blogs.filter(function(blog){
-                    return blog.catalog.indexOf(tag) > -1;
+                    return blog.tags.indexOf(tag) > -1;
                 });
             }
             return blogs;
@@ -70,19 +76,37 @@ angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$
     };
 
 
-    this.tags = function(argument) {
-        return blogDataService.tags().then(function(tagsTree){
-            var values = [];
-            var q = [];
-            q = q.concat(tagsTree.child);
-            while(q.length > 0){
-                var t = q.shift();
-                values.push(t.child);
-            }
-            return {tags:tagsTree,tagsValues:values}
+    this.tags = function() {
+        return blogDataService.tags().then(function(tags){
+            // var values = [];
+            // var q = [];
+            // q = q.concat(tagsTree.child);
+            // while(q.length > 0){
+            //     var t = q.shift();
+            //     values.push(t.child);
+            // }
+            // return {tags:tagsTree,tagsValues:values}
+            return tags;
         });
     }
 
+    this.catalogs = function() {
+        return blogDataService.catalogs().then(function(catalogTree){
+            var values = [];
+            var q = [];
+            q = q.concat(catalogTree.child);
+            while(q.length > 0){
+                var t = q.shift();
+                values.push({catalog:t.key,count:t.count});
+                if(t.child.length > 0){
+                    q = q.concat(t.child);
+                }
+            }
+            return {catalogs:catalogTree,catalogValues:values.sort(function (a,b) {
+                return b.count - a.count;
+            })}
+        });
+    }
 
     this.search = function(opt) {
 

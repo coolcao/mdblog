@@ -21,6 +21,7 @@ class Blog extends Base {
             this.content = iblog.content;
             this.path = iblog.path;
             this.catalog = iblog.catalog;
+            this.tags = iblog.tags;
         } else {
             super();
         }
@@ -32,6 +33,7 @@ class Blog extends Base {
     }
 
     static query(query_opt,pagination){
+        console.log(query_opt);
         return Base.query('blogs',query_opt,pagination);
     }
     static count(opt){
@@ -63,7 +65,7 @@ class Blog extends Base {
         });
     };
 
-    tags() {
+    catalogs() {
         return mongo.getCollection(this.coll_name).then((coll) => {
             return coll.find({},{catalog:1}).toArray();
         }).then(blogs => {
@@ -71,6 +73,41 @@ class Blog extends Base {
                 return blog.catalog;
             });
             return new CatalogTree(tagArrays);
+        });
+    }
+
+    tags(){
+        return mongo.getCollection(this.coll_name).then((coll) => {
+            return coll.find({},{tags:1}).toArray();
+        }).then(blogs => {
+
+            let tags = blogs.reduce((pre,current) => {
+                return pre.concat(current.tags);
+            },[]).reduce((pre,current) => {
+                if(current){
+                    if(pre[current]){
+                        pre[current] ++;
+                    }else{
+                        pre[current] = 1;
+                    }
+                }
+                return pre;
+            },{});
+
+            let tagArrays = [];
+            for(let key in tags){
+                tagArrays.push({tag:key,count:tags[key]});
+            }
+
+            tagArrays.sort((a,b) => {
+                return b.count - a.count;
+            });
+
+            // let tagArrays = blogs.map(blog => {
+            //     return blog.tags;
+            // });
+            // return new CatalogTree(tagArrays);
+            return tagArrays;
         });
     }
 };

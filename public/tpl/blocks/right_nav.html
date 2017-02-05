@@ -1,19 +1,20 @@
 <div class="col-sm-3" >
   <div  ng-controller="TagsController" ng-init="tags()">
     
-    <h5 class="font-bold">标签分类</h5>
+    <h5 class="font-bold">标签</h5>
     <ul class="list-group">
-      <li class="list-group-item" ng-repeat="tag in tags.child">
-        <a ng-click="listByTag('{{tag.key}}')" >
-          <span class="badge pull-right bg-primary">{{tag.count}}</span> {{tag.key}}
+      <li ng-if="$index < 5"class="list-group-item" ng-repeat="tag in tags">
+        <a ng-click="listByTag('{{tag.tag}}')" >
+          <span class="badge pull-right bg-primary">{{tag.count}}</span> {{tag.tag}}
         </a>
       </li>
     </ul>
-    <div class="tags m-b-lg l-h-2x">
-      <span ng-repeat="tagValue in tagsValues" >
-        <a ng-click="listByTag('{{tagValue.key}}')" class="label bg-info">{{tagValue.key}}</a>
-      </span>
-    </div>
+    <div class="tags m-b-lg l-h-2x"> 
+      <span ng-if="$index > 5" ng-repeat="tag in tags" > 
+        <a ng-click="listByTag('{{tag.tag}}')" class="label bg-info">{{tag.tag}}</a> 
+      </span> 
+    </div> 
+
   </div>
   <h5 class="font-bold">最近发表</h5>
   <div ng-controller="BlogListController" ng-init="recent()">

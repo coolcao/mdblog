@@ -2,8 +2,9 @@ app.controller('TagsController', ['$scope', '$http', '$state','toaster','blogSer
   $scope.tags = function () {
 
     blogService.tags().then(function (result) {
-      $scope.tags = result.tags;
-      $scope.tagsValues = result.tagsValues;
+      // $scope.tags = result.tags;
+      // $scope.tagsValues = result.tagsValues;
+      $scope.tags = result;
     }).catch(function (err) {
       toaster.pop('error','错误',err.message || err);
     });
@@ -14,7 +15,7 @@ app.controller('TagsController', ['$scope', '$http', '$state','toaster','blogSer
     if(!tag){
       toaster.pop('error','错误','tag不能为空');
     }
-    $state.go('blog.list',{page:null,tag:tag});
+    $state.go('blog.list',{page:null,tag:tag,catalog:null});
   };
   
 }])

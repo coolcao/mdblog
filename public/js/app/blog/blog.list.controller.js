@@ -4,10 +4,11 @@ app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state'
 
     $scope.tag = $stateParams.tag;
     $scope.page = $stateParams.page;
+    $scope.catalog = $stateParams.catalog;
 
 
     $scope.list = function() {
-        blogService.list({page:$scope.page,tag:$scope.tag}).then(function (result) {
+        blogService.list({page:$scope.page,tag:$scope.tag,catalog:$scope.catalog}).then(function (result) {
             $scope.pagination = result.pagination;
             $scope.blogs = result.blogs;
         }).catch(function (err) {

@@ -23,10 +23,14 @@ const save = function save(iblog) {
  查询所有，没有分页
  **/
 const list = function list(opt) {
-    var tag = opt.tag;
-    var query = {};
+    let tag = opt.tag;
+    let catalog = opt.catalog;
+    let query = {};
     if (tag) {
-        query.catalog = tag;
+        query.tags = tag;
+    }
+    if(catalog){
+        query.catalog = catalog;
     }
     return new Promise(function(resolve, reject) {
         Blog.query(query).then(function(blogs) {
@@ -44,11 +48,15 @@ const list = function list(opt) {
  **/
 const listByPage = function listByPage(opt, pagination) {
     let tag = opt.tag;
+    let catalog = opt.catalog;
     let page = pagination && pagination.page ? pagination.page : config.pagination.page;
     let limit = pagination && pagination.limit ? pagination.limit : config.pagination.limit;
     let query = {};
     if (tag) {
-        query.catalog = tag;
+        query.tags = tag;
+    }
+    if(catalog){
+        query.catalog = catalog;
     }
     let list = function list(query) {
         return Blog.query(query, {
@@ -146,6 +154,11 @@ const tags = function tags() {
     return blog.tags();
 }
 
+const catalogs = function catalogs() {
+    let blog = new Blog();
+    return blog.catalogs();
+}
+
 //獲取博客內容，並保存到數據庫
 const get_and_save = function(path) {
     let p = new Promise(function(resolve, reject) {
@@ -183,6 +196,7 @@ module.exports = {
     listByPage,
     search,
     tags,
+    catalogs,
     queryById,
     updateByPath,
     remove,

@@ -971,7 +971,8 @@ body {
   .app-aside-fixed .aside-wrap .navi-wrap {
     position: relative;
     /*width: 217px;*/
-    height: 100%;
+    height: 100%; 
+    width: 110%; /*这里是新添加的一个宽度属性，用于修改火狐下的显示效果，让其稍微大于100%显示*/
     overflow-x: hidden;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
@@ -1194,9 +1195,9 @@ html {
   display: block;
 }
 
-.navi ul.nav li li a {
+/*.navi ul.nav li li a {
   padding-left: 55px;
-}
+}*/
 
 .navi ul.nav li a {
   position: relative;

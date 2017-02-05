@@ -1,5 +1,6 @@
 <div class="bg-light lter b-b wrapper-md">
-  <h1 class="m-n font-thin h3"><span ng-if="tag">标签分类：{{tag}}</span> </h1>
+  <h1 class="m-n font-thin h3"><span ng-if="tag">标签：{{tag}}</span> </h1>
+  <h1 class="m-n font-thin h3"><span ng-if="catalog">目录分类：{{catalog}}</span> </h1>
 </div>
 <div class="wrapper-md"  ng-init="list()">
   <div class="row">
@@ -17,7 +18,7 @@
               <i class="fa fa-clock-o text-muted"></i> {{ blog.create_time | date:'yyyy-MM-dd HH:mm:ss' }}
               <span class="m-l-sm">
                 <i class="fa fa-tags text-muted"></i>
-                <span ng-repeat="cata in blog.catalog"><a ui-sref="blog.list({tag:'{{cata}}'})">{{cata}}&nbsp;&nbsp;</a></span>
+                <span ng-repeat="tag in blog.tags"><a ui-sref="blog.list({tag:'{{tag}}'})">{{tag}}&nbsp;&nbsp;</a></span>
               </span>
             </div>
           </div>

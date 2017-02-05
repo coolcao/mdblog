@@ -25,13 +25,13 @@ angular.module('app')
             resolve: {
               deps: ['$ocLazyLoad', function($ocLazyLoad) {
                 return $ocLazyLoad.load(['toaster','js/services/blog.pagination.factory.js','js/services/blog.dataService.js','js/services/blog.service.js']).then(function () {
-                  return $ocLazyLoad.load(['js/app/blog/blog.tags.controller.js', 'js/app/blog/blog.list.controller.js', 'js/controllers/search.form.controller.js'])
+                  return $ocLazyLoad.load(['js/app/blog/blog.tags.controller.js', 'js/app/blog/blog.list.controller.js', 'js/controllers/search.form.controller.js','js/controllers/nav.controller.js'])
                 });
               }]
             }
           })
           .state('blog.list', {
-            url: '/list?:tag&:page',
+            url: '/list?:tag&:page&:catalog',
             controller: 'BlogListController',
             templateUrl: 'tpl/blog/blog.list.html',
             resolve: {

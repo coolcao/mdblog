@@ -14,11 +14,13 @@ const converter = new showdown.Converter({
 })
 
 const list = function(req, res) {
-    let tag = req.query.tag
-    let page = req.query.page >>> 0
+    let tag = req.query.tag;
+    let page = req.query.page >>> 0;
+    let catalog = req.query.catalog;
 
     blogService.listByPage({
-        tag: tag
+        tag: tag,
+        catalog:catalog
     }, {
         page: page
     }).then(function(data) {
@@ -167,6 +169,21 @@ const tags = function tags(req, res) {
     })
 }
 
+const catalogs = function catalogs(req,res) {
+    blogService.catalogs().then(function(catalogs) {
+        res.json({
+            ret: 0,
+            catalogs: catalogs
+        })
+    }).catch(function(err) {
+        console.log(err)
+        res.json({
+            ret: 500,
+            err: err
+        })
+    })
+}
+
 const search = function search(req, res) {
     let kw = req.query.keyword ? req.query.keyword : '.'
     let page = req.query.page >>> 0
@@ -200,5 +217,6 @@ module.exports = {
     detail,
     detailPath,
     tags,
+    catalogs,
     search
 }

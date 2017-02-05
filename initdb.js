@@ -6,6 +6,7 @@ const fs = require('fs')
 const filePath = '/Users/coolcao/mycode/coolcao/blogs'
 const Blog = require('./module/Blog.js');
 const hexoTools = require('./service/hexoTools.js');
+const mdblogTools = require('./service/mdblogTools.js');
 
 let mds = []
 let dirs = []
@@ -48,7 +49,8 @@ let listMdFilesExceptHidden = function (path) {
 
 
 // let data = fs.readFileSync('/Users/coolcao/mycode/coolcao/blogs/js/计算机中的负数为什么使用补码表示.md','utf-8');
-// let head = data && hexoTools.parseHead(data);
+// let head = data && mdblogTools.parseBlogInfo(data);
+// console.log(head);
 // let stats = fs.statSync('/Users/coolcao/mycode/coolcao/blogs/js/计算机中的负数为什么使用补码表示.md');
 // console.log(stats);
 
@@ -64,6 +66,7 @@ mongo.getDB.then(db => {
     let catalog = array;
     let data = fs.readFileSync(item,'utf-8');
     let stats = fs.statSync(item);
+    let mdblogInfo = data && mdblogTools.parseBlogInfo(data);
     let head = data && hexoTools.parseHead(data);
     let iblog = {
       create_time:stats.birthtime,
@@ -79,12 +82,18 @@ mongo.getDB.then(db => {
       let date = head && head.date;
       iblog.content = head.head && data.replace(head.head,'');
       iblog.name = title || name;
+      iblog.tags = head.tags;
       try{
         iblog.create_time = new Date(date);
         iblog.update_time = new Date(date);
       }catch(err){
         console.log(err.message);
       }
+    }else if(mdblogInfo){
+      iblog.name = mdblogInfo.title;
+      iblog.create_time = new Date(mdblogInfo.time);
+      iblog.update_time = new Date(mdblogInfo.time);
+      iblog.tags = mdblogInfo.tags;
     }
     // let blog = new Blog({content:data,path:subpath,name:title || name,catalog:catalog,create_time:date,update_time:date});
     let blog =  new Blog(iblog);
@@ -101,5 +110,6 @@ mongo.getDB.then(db => {
 }).catch(err => {
   console.log(err);
 });
+
 
 
