@@ -1,70 +1,30 @@
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const swig = require('swig');
+const Koa = require('koa');
+const serve = require('koa-static');
 
-const router = require('./routes/router.js')
+const router = require('./routes/router.js');
 
-const app = express();
+const app = new Koa();
 
-// view engine setup
-app.engine('html',swig.renderFile);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
+//time计时
+app.use(async (ctx,next) => {
+    let start = new Date();
+    await next();
+    console.log(`${ctx.request.method}    ${ctx.request.url}    ${new Date() - start}ms`);
+});
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//设置静态目录
+app.use(serve(__dirname + '/public'));
 
+//router
 router(app);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    // var err = new Error('Not Found');
-    // err.status = 404;
-    // next(err);
-    console.log(req.path);
-    console.log('404');
-    next();
-});
 
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        console.log(err);
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    console.log(err);
-    res.status(err.status || 500);
-    res.json({
-        ret:err.status,
-        error:err.message
-    });
-});
-
-process.on('unhandledRejection', (reason, p) => {
-    console.log('捕捉到未处理的Promise拒绝');
-    console.log(reason);
-});
+// app.use(async (ctx,next) => {
+//     console.log('用户认证');
+//     // await next();
+//     ctx.response.body = '用户未认证'
+// });
 
 
-module.exports = app;
+app.listen(3000);
+console.log('app started at port 3000...');

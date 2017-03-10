@@ -33,7 +33,6 @@ class Blog extends Base {
     }
 
     static query(query_opt,pagination){
-        console.log(query_opt);
         return Base.query('blogs',query_opt,pagination);
     }
     static count(opt){

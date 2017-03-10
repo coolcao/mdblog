@@ -5,6 +5,7 @@
 FROM coolcao/nodejs-6.5
 MAINTAINER me@coolcao.com
 
+ENV NODE_ENV aliyun
 ENV HTTP_PORT 3000
 ENV MONGO_URL mongodb://host:27017/db
 
@@ -17,4 +18,4 @@ WORKDIR /app
 
 EXPOSE 3000
 
-CMD ["node", "bin/www"]
+CMD ["node", "app.js"]
