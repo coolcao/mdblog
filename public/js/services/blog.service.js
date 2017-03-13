@@ -9,40 +9,82 @@ angular.module('app').service('blogService', ['$http', '$localStorage', '$q', '$
      */
     this.list = function list(opt) {
 
+        var key = 'blogs';
+
         var page = opt.page || 1;
         var tag = opt.tag ;
         var catalog = opt.catalog;
 
-        return blogDataService.blogs().then(function(blogs){
-            if(catalog){
-                blogs = blogs.filter(function(blog){
-                    return blog.catalog.indexOf(catalog) > -1;
-                });
-            }
-            if(tag){
-                blogs = blogs.filter(function(blog){
-                    return blog.tags.indexOf(tag) > -1;
-                });
-            }
-            return blogs;
-        }).then(function(blogs){
-            //分页，每页条数
-            var limit = 5;
-            //符合条件的博客的所有条数
-            var total = blogs.length;
-            //生成分页对象
-            var pagination = paginationFactory.init(page,limit,total);
-            
-            //分页后的博客
-            var _blogs = blogs.slice(limit*(page-1),limit*page);
+        //如果缓存中有数据，则直接从缓存中取
+        if($localStorage[key] && ((new Date()).getTime() - Date.parse($localStorage[key].time))/1000/3600 < 24){
+            return blogDataService.blogs().then(function(blogs){
+                if(catalog){
+                    blogs = blogs.filter(function(blog){
+                        return blog.catalog.indexOf(catalog) > -1;
+                    });
+                }
+                if(tag){
+                    blogs = blogs.filter(function(blog){
+                        return blog.tags.indexOf(tag) > -1;
+                    });
+                }
+                return blogs;
+            }).then(function(blogs){
+                //分页，每页条数
+                var limit = 5;
+                //符合条件的博客的所有条数
+                var total = blogs.length;
+                //生成分页对象
+                var pagination = paginationFactory.init(page,limit,total);
+                
+                //分页后的博客
+                var _blogs = blogs.slice(limit*(page-1),limit*page);
 
-            _blogs.forEach(function (item) {
-                item.subcontent = item.content.substring(0, 500).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                _blogs.forEach(function (item) {
+                    item.subcontent = item.content.substring(0, 500).replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                });
+
+                return {blogs:_blogs,pagination:pagination}
             });
+        }else{
 
-            return {blogs:_blogs,pagination:pagination}
-        });
+            //异步获取所有数据
+            // var url = '/blogs/list';
+            // $http.get(url).then(function(result){
+            //     if(result.status !== 200){
+            //         reject('异步请求错误，错误码：【' + result.status + '】');
+            //     }
+            //     var blogs = result.data.blogs;
+            //     if(blogs && (Object.prototype.toString.call(blogs) == '[object Array]') && (blogs.length > 0)){
+            //         console.log('保存博客列表至缓存');
+            //         $localStorage[key] = {time:new Date(),blogs:blogs};
+            //     }
+            // },function(err){
+            //     console.log('异步获取所有博客数据出错：');
+            //     console.log(err);
+            // });
 
+            //直接从接口获取
+            return $q(function (resolve,reject) {
+                var url = '/blogs?page='+page;
+                if(tag){
+                    url += '&tag='+tag;
+                }
+                if(catalog){
+                    url += '&catalog=' + catalog;
+                }
+                $http.get(url).then(function (result) {
+                    if(result.status !== 200){
+                        reject('请求错误，错误码：【' + result.status + '】');
+                    }
+                    var blogs = result.data.blogs;
+                    var pagination = paginationFactory.init(result.data.pagination.page,result.data.pagination.limit,result.data.pagination.total);
+                    resolve({blogs:blogs,pagination:pagination});
+                }).catch(function (err) {
+                    reject(err);
+                });
+            });
+        }
     };
 
 
