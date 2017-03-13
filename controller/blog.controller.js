@@ -28,6 +28,7 @@ const list = async(ctx, next) => {
         })
 
         ctx.response.body = {
+            ret:0,
             blogs: blogs,
             pagination: data.pagination
         };
@@ -48,6 +49,7 @@ const listAll = async(ctx, next) => {
             item.content = converter.makeHtml(item.content)
         });
         ctx.response.body = {
+            ret:0,
             blogs: blogs
         };
     } catch (err) {
