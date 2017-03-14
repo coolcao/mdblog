@@ -5,6 +5,18 @@ const router = require('./routes/router.js');
 
 const app = new Koa();
 
+app.use(async (ctx,next) => {
+    try{
+        await next();
+    }catch(err){
+        ctx.response.body = {
+            ret:500,
+            err:err.message || err
+        };
+        console.log('全局捕捉到错误：' + (err.message || err));
+    }
+});
+
 //time计时
 app.use(async (ctx,next) => {
     let start = new Date();
