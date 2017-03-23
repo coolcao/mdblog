@@ -109,10 +109,10 @@ angular.module('app').service('blogService', ['$http', '$q', 'paginationFactory'
         return $q(function (resolve,reject) {
             var url = '/blogs/search?';
             if(keyword){
-                url = url + 'keyword = ' + keyword;
+                url = url + 'keyword=' + keyword;
             }
             if(page){
-                url = url + '&page = ' + page;
+                url = url + '&page=' + page;
             }
             $http.get(url).then(function (result) {
                 if(result.status !== 200){
