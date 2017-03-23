@@ -9,8 +9,10 @@
         <div class="panel" ng-repeat="blog in blogs">
           <div class="wrapper-lg">
             <h2 class="m-t-none"><a ui-sref="blog.detail({path:'{{blog.path}}'})">{{blog.name}}</a></h2>
-            <div>
-              {{blog.subcontent}}
+            <div ng-bind-html="blog.subcontent | trustHtml">
+            </div>
+            <div class="text-right">
+              <a ui-sref="blog.detail({path:'{{blog.path}}'})">ReadMore...</a>
             </div>
             <div class="line line-lg b-b b-light"></div>
             <div class="text-muted">

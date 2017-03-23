@@ -13,8 +13,7 @@
               height: auto;
             }
             </style>
-            <div ng-bind-html="blog.content | trustHtml">
-            </div>
+            <div ng-bind-html="blog.content | trustHtml"></div>
             <div class="line line-lg b-b b-light"></div>
             <div class="text-muted">
               <i class="fa fa-user text-muted"></i> by <a href class="m-r-sm">coolcao</a>
@@ -35,51 +34,6 @@
         </ul>
       </div>
     </div>
-    <!-- <div class="col-sm-3" ng-controller="TagsController" ng-init="tags()">
-      <h5 class="font-bold">标签分类</h5>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="tag in tags.child">
-          <a href>
-            <span class="badge pull-right bg-primary">{{tag.count}}</span> {{tag.key}}
-          </a>
-        </li>
-      </ul>
-      <div class="tags m-b-lg l-h-2x">
-        <a href class="label bg-primary">Bootstrap</a> <a href class="label bg-primary">Application</a> <a href class="label bg-primary">Apple</a> <a href class="label bg-primary">Less</a> <a href class="label bg-primary">Theme</a> <a href class="label bg-primary">Wordpress</a>
-      </div>
-      <h5 class="font-bold">Recent Posts</h5>
-      <div>
-        <div>
-          <a class="pull-left thumb thumb-wrapper m-r">
-            <img src="img/b0.jpg">
-          </a>
-          <div class="clear">
-            <a href class="font-semibold text-ellipsis">Bootstrap 3: What you need to know</a>
-            <div class="text-xs block m-t-xs"><a href>Travel</a> 2 minutes ago</div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div>
-          <a class="pull-left thumb thumb-wrapper m-r">
-            <img src="img/b1.jpg">
-          </a>
-          <div class="clear">
-            <a href class="font-semibold text-ellipsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
-            <div class="text-xs block m-t-xs"><a href>Design</a> 2 hours ago</div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div>
-          <a class="pull-left thumb thumb-wrapper m-r">
-            <img src="img/b2.jpg">
-          </a>
-          <div class="clear">
-            <a href class="font-semibold text-ellipsis">Sed diam nonummy nibh euismod tincidunt ut laoreet</a>
-            <div class="text-xs block m-t-xs"><a href>MFC</a> 1 week ago</div>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="hidden-xs hidden-sm" data-ng-include="'tpl/blocks/right_nav.html'"></div>
   </div>
 </div>

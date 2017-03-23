@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state', 'toaster','blogService',function($scope, $http, $stateParams,$state,toaster,blogService) {
+app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state', 'toaster','blogService','$showdown',function($scope, $http, $stateParams,$state,toaster,blogService,$showdown) {
 
     $scope.tag = $stateParams.tag;
     $scope.page = $stateParams.page;
@@ -11,6 +11,9 @@ app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state'
         blogService.list({page:$scope.page,tag:$scope.tag,catalog:$scope.catalog}).then(function (result) {
             $scope.pagination = result.pagination;
             $scope.blogs = result.blogs;
+            $scope.blogs.forEach(function (item) {
+                item.subcontent = $showdown.makeHtml(item.content).substr(0,300);
+            });
         }).catch(function (err) {
             toaster.pop('error','错误',err.message || err);
         });

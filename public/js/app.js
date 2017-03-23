@@ -7,6 +7,7 @@ angular.module('app', [
   'ngSanitize',
   'ngTouch',
   'ngStorage',
+  'ng-showdown',
   'ui.router',
   'ui.bootstrap',
   'ui.load',

@@ -19,36 +19,17 @@ const list = async(ctx, next) => {
     }, {
         page: page
     });
-    let blogs = Array.from(data.blogs);
-    blogs.forEach(function(item, index, array) {
-        item.subcontent = item.content.substring(0, 300).replace(/</g, '&lt;').replace(/>/g, '&gt;')
-        item.content = converter.makeHtml(item.content)
-    })
 
     ctx.response.body = {
         ret: 0,
-        blogs: blogs,
+        blogs: data.blogs,
         pagination: data.pagination
     };
 };
 
-const listAll = async(ctx, next) => {
-    let blogs = await blogService.queryAll();
-    blogs.forEach(function(item, index, array) {
-        item.content = converter.makeHtml(item.content)
-    });
-    ctx.response.body = {
-        ret: 0,
-        blogs: blogs
-    };
-}
-
 const detail = async(ctx, next) => {
     let id = ctx.params.id;
     let blog = await blogService.queryById(id);
-    if (blog) {
-        blog.content = converter.makeHtml(blog.content).replace(/<pre>/g, '<pre class="prettyprint">');
-    }
     ctx.response.body = {
         ret: 0,
         blog: blog
@@ -59,10 +40,6 @@ const detailPath = async(ctx, next) => {
     let path = ctx.params.path;
     // 注意这里的path，前端传的时候一定要进行urlencoding，后端这里也要解，但是使用的express库会自动解
     let result = await blogService.queryByPath(path);
-
-    if (result) {
-        result.content = converter.makeHtml(result.content).replace(/<pre>/g, '<pre class="prettyprint">');
-    }
     ctx.response.body = {
         ret: 0,
         blog: result
@@ -157,24 +134,15 @@ const search = async(ctx, next) => {
     let data = await blogService.search(kw, {
         page: page
     });
-    let blogs = Array.from(data.blogs);
-
-    blogs.forEach((item, index, array) => {
-            item.subcontent = item.content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;')
-            item.content = converter.makeHtml(item.content)
-        })
-        // 手动剔除query中的page参数
     delete ctx.request.query.page;
-
     ctx.response.body = {
-        blogs: blogs,
+        blogs: data.blogs,
         pagination: data.pagination
     }
 }
 
 module.exports = {
     list,
-    listAll,
     detail,
     detailPath,
     post,
