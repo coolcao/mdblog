@@ -128,6 +128,7 @@ const updateByPath = function updateByPath(iblog) {
         blog.queryByPath().then(function(b) {
             if (b && b._id) {
                 blog._id = b._id;
+                blog.update_time = new Date();
                 blog.updateByPath().then(function(result) {
                     resolve(result);
                 });

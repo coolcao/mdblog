@@ -7,6 +7,7 @@ const converter = new showdown.Converter({
     parseImgDimensions: true
 })
 const blogService = require('../service/blogService.js');
+const hookService = require('../service/hookService.js');
 
 const list = async(ctx, next) => {
     let tag = ctx.request.query.tag;
@@ -96,7 +97,7 @@ const post = async(ctx, next) => {
     updated.forEach(function(blog) {
         console.log('修改的博客：' + blog)
         hookService.content(blog).then(function(_blog) {
-            return blogService.update(_blog)
+            return blogService.updateByPath(_blog)
         }).then(result => {
             console.log(`修改博客：【${blog}】`)
         }).catch(function(err) {
