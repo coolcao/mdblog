@@ -21,7 +21,7 @@ app.controller('BlogListController', ['$scope', '$http', '$stateParams','$state'
 
     $scope.recent = function () {
         blogService.recent().then(function(result){
-            $scope.blogs = result;
+            $scope.recents = result;
         }).catch(function (err) {
             toaster.pop('error','错误',err.message || err);
         });

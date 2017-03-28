@@ -38,7 +38,9 @@ angular.module('app').service('blogService', ['$http', '$q', 'paginationFactory'
 
 
     this.recent = function() {
-        return this.list({page:1});
+        return this.list({page:1}).then(function (result) {
+            return result && result.blogs;
+        });
     };
 
 

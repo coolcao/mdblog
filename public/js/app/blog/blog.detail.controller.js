@@ -10,7 +10,6 @@ app.controller('BlogDetailController', ['$scope', '$http', '$stateParams', '$fil
             var reg = /<code class=[^>]*([\s\S]*?)<\/code>/g
             var codes = result.content.match(reg);
             if (codes) {
-                console.log('ppppppppppp');
                 let coder = codes.map((item) => {
                     return $filter('prettyprint')(item)
                 })
