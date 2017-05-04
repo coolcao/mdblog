@@ -1,9 +1,13 @@
-const Koa = require('koa');
-const serve = require('koa-static');
+/// <reference path="../typings/index.d.ts" />
+//# sourceMappingURL=path/to/source.map
 
-const router = require('./routes/router.js');
+require('source-map-support').install();
 
-const app = new Koa();
+import * as Koa from 'koa';
+import * as serve from 'koa-static';
+import router from './routes/router';
+
+const app: Koa = new Koa();
 
 app.use(async (ctx,next) => {
     try{
@@ -14,18 +18,20 @@ app.use(async (ctx,next) => {
             err:err.message || err
         };
         console.log('全局捕捉到错误：' + (err.message || err));
+        console.log(err);
     }
 });
 
 //time计时
 app.use(async (ctx,next) => {
-    let start = new Date();
+    let start = (new Date()).getTime();
     await next();
-    console.log(`${ctx.request.method}    ${ctx.request.url}    ${new Date() - start}ms`);
+    let end = (new Date()).getTime();
+    console.log(`${ctx.request.method}    ${ctx.request.url}    ${end - start}ms`);
 });
 
 //设置静态目录
-app.use(serve(__dirname + '/public'));
+app.use(serve(process.cwd() + '/public'));
 
 //router
 router(app);

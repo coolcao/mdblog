@@ -1,12 +1,11 @@
 'use strict'
 
-const Promise = require('bluebird')
-const mongo = require('./config/mongo')
+const mongo = require('./src/config/mongo')
 const fs = require('fs')
-const filePath = '/Users/coolcao/mycode/coolcao/blogs'
-const Blog = require('./module/Blog.js');
-const hexoTools = require('./service/hexoTools.js');
-const mdblogTools = require('./service/mdblogTools.js');
+const filePath = '/Users/coolcao/mycode/node/blogs'
+const Blog = require('./src/module/Blog.js');
+const hexoTools = require('./src/service/hexoTools.js');
+const mdblogTools = require('./src/service/mdblogTools.js');
 
 let mds = []
 let dirs = []

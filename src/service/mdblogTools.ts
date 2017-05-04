@@ -1,10 +1,5 @@
-'use strict';
 
-let required = function(arg) {
-    throw new Error(`parameter ${arg} must be required!`);
-}
-
-let parseBlogInfo = function(content = required('content')) {
+let parseBlogInfo = function(content: string) {
     let reg = /(<!--mdblog)([\s\S]*?)(mdblog-->\s)/;
     let result = content.match(reg);
     if (result) {
@@ -20,6 +15,6 @@ let parseBlogInfo = function(content = required('content')) {
 
 }
 
-module.exports = {
+export {
     parseBlogInfo
 }

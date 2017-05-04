@@ -1,7 +1,5 @@
-'use strict';
-
-const config = require('./config');
-const MongoClient = require('mongodb').MongoClient;
+import config from './config';
+import {MongoClient} from 'mongodb';
 
 const getDB = MongoClient.connect(config.mongo.url);
 
@@ -15,8 +13,8 @@ const getCollection = function (coll) {
     })
 }
 
+export {
+  getDB,
+  getCollection
+}
 
-module.exports = {
-    getDB: getDB,
-    getCollection:getCollection
-};

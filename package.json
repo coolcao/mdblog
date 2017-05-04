@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node dist/app.js",
+    "build": "tsc"
   },
   "dependencies": {
     "koa": "^2.1.0",
@@ -13,7 +14,8 @@
     "mongodb": "^2.2.5",
     "node-uuid": "^1.4.7",
     "request": "^2.74.0",
-    "showdown": "^1.4.2"
+    "showdown": "^1.4.2",
+    "source-map-support": "^0.4.14"
   },
   "devDependencies": {
     "gulp-nodemon": "^2.1.0",

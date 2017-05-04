@@ -1,15 +1,14 @@
-'use strict';
 
-const Router = require('koa-router');
-const KoaBody = require('koa-body');
-const koaBody = new KoaBody({
+import * as Router from 'koa-router';
+import * as KoaBody from 'koa-body';
+import blogCtrl from '../controller/blog.controller';
+
+const koaBody: KoaBody = new KoaBody({
     multipart: true
 });
-const router = new Router({
+const router: Router = new Router({
     prefix: '/blogs'
 });
-
-const blogCtrl = require('../controller/blog.controller.js');
 
 router.get('/', koaBody,blogCtrl.list);
 router.post('/',koaBody,blogCtrl.post);
@@ -18,5 +17,5 @@ router.get('/catalogs',blogCtrl.catalogs);
 router.get('/search',blogCtrl.search);
 router.get('/:path',blogCtrl.detailPath);
 
-module.exports = router;
+export default router;
 

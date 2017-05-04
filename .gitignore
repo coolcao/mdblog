@@ -1,6 +1,11 @@
+.project
+.settings/**
 .idea/**
 .vscode/**
+typings/**
 node_modules/**
+dist/**
 bower_components/**
 public/javascripts/dist/*
 public/stylesheets/dist/*
+
