@@ -1,12 +1,6 @@
-import * as showdown from 'showdown';
 import CatalogTree from '../module/CatalogTree';
 import blogService from '../service/blogService';
 import hookService from '../service/HookService';
-
-const converter = new showdown.Converter({
-  tables: true,
-  parseImgDimensions: true
-})
 
 export default {
   async list(ctx, next) {

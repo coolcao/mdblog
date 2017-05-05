@@ -10,9 +10,7 @@
     "koa-router": "registry:dt/koa-router#7.0.0+20170316163447",
     "koa-static": "registry:dt/koa-static#2.0.0+20161219223325",
     "mongodb": "registry:dt/mongodb#2.1.0+20170212052546",
-    "node-uuid": "registry:dt/node-uuid#0.0.0+20160510232759",
-    "request": "registry:dt/request#0.0.0+20170323073920",
-    "showdown": "registry:dt/showdown#1.4.1+20170307123228"
+    "request": "registry:dt/request#0.0.0+20170323073920"
   },
   "globalDependencies": {
     "node": "registry:dt/node#7.0.0+20170322231424"

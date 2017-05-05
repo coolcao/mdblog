@@ -1,9 +1,10 @@
 {
   "name": "coolcao",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node dist/app.js",
+    "prebuild":"npm install && typings install",
     "build": "tsc"
   },
   "dependencies": {
@@ -12,9 +13,7 @@
     "koa-router": "^7.0.1",
     "koa-static": "^3.0.0",
     "mongodb": "^2.2.5",
-    "node-uuid": "^1.4.7",
     "request": "^2.74.0",
-    "showdown": "^1.4.2",
     "source-map-support": "^0.4.14"
   },
   "devDependencies": {

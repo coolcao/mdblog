@@ -1,11 +1,11 @@
 'use strict'
 
-const mongo = require('./src/config/mongo')
+const mongo = require('./dist/config/mongo')
 const fs = require('fs')
-const filePath = '/Users/coolcao/mycode/node/blogs'
-const Blog = require('./src/module/Blog.js');
-const hexoTools = require('./src/service/hexoTools.js');
-const mdblogTools = require('./src/service/mdblogTools.js');
+const filePath = '/Users/coolcao/code/coolcao/blogs'
+const Blog = require('./dist/module/Blog.js').default;
+const hexoTools = require('./hexoTool.js');
+const mdblogTools = require('./dist/service/mdblogTools.js');
 
 let mds = []
 let dirs = []
